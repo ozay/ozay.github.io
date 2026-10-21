@@ -136,9 +136,22 @@ Three files make that work, and none of them should be deleted:
    — the workflow does the publishing.)
 4. **Watch the first deploy** on the *Actions* tab. It takes about a minute, and
    ends with the live URL.
-5. **Add the custom domain:** *Settings* → *Pages* → *Custom domain* → enter
-   `ozay.in` and save. Leave **Enforce HTTPS** ticked once it becomes available —
-   the certificate can take up to an hour to issue.
+5. **Check the custom domain took.** The `CNAME` file in this repository sets it
+   automatically on the first deploy, so *Settings* → *Pages* → *Custom domain*
+   should already read `ozay.in`. Tick **Enforce HTTPS** once it becomes
+   selectable — the certificate can take up to an hour to issue, and the box
+   stays greyed out until DNS resolves.
+
+> **Order matters here.** Because `CNAME` claims `ozay.in` the moment the first
+> deploy finishes, GitHub immediately starts redirecting `ozay.github.io` to
+> `ozay.in`. If the DNS below has not moved yet, that redirect leads nowhere and
+> the site will look broken for a while — it is not. Either change the DNS first
+> and then push, or, if you want to eyeball the site on `ozay.github.io` before
+> touching the domain, delete `CNAME`, push, look, then add it back:
+>
+> ```bash
+> git rm CNAME && git commit -m "Hold the custom domain for now" && git push
+> ```
 
 ### DNS
 
@@ -156,8 +169,8 @@ Use the four A records together — they are GitHub's load-balanced set, not
 alternatives. If you prefer IPv6, GitHub also publishes AAAA records; the A
 records alone are enough. Propagation usually takes minutes but can take a day.
 
-Until DNS has moved, the site is also reachable at `https://ozay.github.io/` —
-handy for checking everything works before you touch the domain.
+Once DNS has propagated, `ozay.github.io` redirects to `ozay.in` automatically,
+and the `www` record sends `www.ozay.in` to the same place.
 
 ### Afterwards
 
