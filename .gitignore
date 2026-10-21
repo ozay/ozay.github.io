@@ -17,3 +17,6 @@ Icon?
 
 # Local server / scratch
 *.log
+
+# Claude Code's local preview config — a dev convenience, not part of the site
+.claude/

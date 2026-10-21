@@ -94,8 +94,12 @@ content/posts/      the Markdown posts
 CNAME               serves the site at ozay.in
 .nojekyll           stops GitHub Pages running Jekyll over the folder
 .github/workflows/  the Pages deploy job
-.claude/            local preview config for Claude Code; not used in production
+.claude/            local preview config for Claude Code; gitignored, never published
 ```
+
+This folder is the whole repository. It sits inside `Assets/Website/`, which is
+free to hold anything else you like — drafts, source images, the old Google Sites
+export — none of which is tracked or published.
 
 The navigation and footer are repeated in each HTML file, since there is no build
 step. If you change a nav link, change it in all eight pages.
@@ -116,13 +120,15 @@ Three files make that work, and none of them should be deleted:
 
 ### First-time setup
 
-1. **Create an empty repository** on GitHub — `ozay/ozay.in` is a good name. Do
-   not let GitHub add a README, licence or `.gitignore`; this folder already has
-   what it needs.
+1. **Create an empty repository** on GitHub named exactly **`ozay.github.io`**.
+   The name matters: a repository called `<username>.github.io` is a *user site*,
+   which publishes at the root of the domain rather than under a `/project/`
+   path. Do not let GitHub add a README, licence or `.gitignore`; this folder
+   already has what it needs. (An account can have only one user site.)
 2. **Push this folder to it:**
 
    ```bash
-   git remote add origin git@github.com:ozay/ozay.in.git && git push -u origin main
+   git remote add origin git@github.com:ozay/ozay.github.io.git && git push -u origin main
    ```
 
 3. **Turn Pages on:** repository → *Settings* → *Pages* → under *Build and
@@ -150,7 +156,8 @@ Use the four A records together — they are GitHub's load-balanced set, not
 alternatives. If you prefer IPv6, GitHub also publishes AAAA records; the A
 records alone are enough. Propagation usually takes minutes but can take a day.
 
-Until DNS has moved, the site is also reachable at `https://ozay.github.io/ozay.in/`.
+Until DNS has moved, the site is also reachable at `https://ozay.github.io/` —
+handy for checking everything works before you touch the domain.
 
 ### Afterwards
 
@@ -178,11 +185,12 @@ sitemap as you publish them.
 
 ### A caution about Dropbox
 
-This folder lives inside Dropbox, and Dropbox syncs `.git/` along with everything
-else. That is usually fine on one machine, but if you ever edit the site from two
-machines at once, Dropbox can sync Git's internal files mid-write and corrupt the
-repository. If that worries you, move the folder somewhere outside Dropbox and let
-GitHub be the backup instead — the repo is then the single source of truth.
+This repository lives inside Dropbox, and Dropbox syncs `.git/` along with
+everything else. That is usually fine on one machine, but if you ever edit the
+site from two machines at once, Dropbox can sync Git's internal files mid-write
+and corrupt the repository. If that worries you, move this `ozay.github.io`
+folder somewhere outside Dropbox and let GitHub be the backup instead — the repo
+is then the single source of truth.
 
 ## Notes on the data
 
