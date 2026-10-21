@@ -108,6 +108,12 @@
             ${p.doi
               ? `<a class="btn btn-ghost btn-sm" href="https://doi.org/${Site.esc(p.doi)}" target="_blank" rel="noopener">DOI</a>`
               : `<a class="btn btn-ghost btn-sm" href="${scholar}" target="_blank" rel="noopener">${Site.t("searchScholar")}</a>`}
+            ${p.link
+              ? `<a class="btn btn-primary btn-sm" href="${Site.esc(p.link.href)}">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20h8M12 17v3"/></svg>
+                   ${Site.esc(Site.pick(p.link, "label"))}
+                 </a>`
+              : ""}
           </div>
         </div>
       </article>`;
