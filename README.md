@@ -1,6 +1,7 @@
-# ozay.in
+# ozay.github.io
 
-A static, bilingual (EN/TR) personal site. Plain HTML, CSS and vanilla JavaScript —
+The personal site of Özay Özaydın, live at <https://ozay.github.io>.
+Static and bilingual (EN/TR). Plain HTML, CSS and vanilla JavaScript —
 no build step, no framework, no package manager, no trackers, no cookies.
 
 ## Running it locally
@@ -91,7 +92,6 @@ assets/
   img/favicon.svg
 content/posts/      the Markdown posts
 
-CNAME               serves the site at ozay.in
 .nojekyll           stops GitHub Pages running Jekyll over the folder
 .github/workflows/  the Pages deploy job
 .claude/            local preview config for Claude Code; gitignored, never published
@@ -106,84 +106,65 @@ step. If you change a nav link, change it in all eight pages.
 
 ## Publishing (GitHub Pages)
 
+The site lives at **<https://ozay.github.io>**.
+
 This repository deploys itself. `.github/workflows/deploy.yml` uploads the whole
 folder to GitHub Pages on every push to `main` — there is no build step, because
 the site is already static.
 
-Three files make that work, and none of them should be deleted:
+Two files make that work, and neither should be deleted:
 
 | File | Why it is there |
 |---|---|
-| `CNAME` | Tells Pages to serve the site at `ozay.in`. |
 | `.nojekyll` | Stops Pages running the site through Jekyll, which would otherwise ignore files and folders beginning with `_`. |
 | `.github/workflows/deploy.yml` | The deploy job itself. |
 
-### First-time setup
+Because the repository is named `ozay.github.io`, it is a GitHub *user site*: it
+publishes at the root of the domain, so every relative path in the HTML resolves
+without a base-path prefix.
 
-1. **Create an empty repository** on GitHub named exactly **`ozay.github.io`**.
-   The name matters: a repository called `<username>.github.io` is a *user site*,
-   which publishes at the root of the domain rather than under a `/project/`
-   path. Do not let GitHub add a README, licence or `.gitignore`; this folder
-   already has what it needs. (An account can have only one user site.)
-2. **Push this folder to it:**
+### Settings this repository depends on
 
-   ```bash
-   git remote add origin git@github.com:ozay/ozay.github.io.git && git push -u origin main
-   ```
+These are configured once, in the GitHub web UI:
 
-3. **Turn Pages on:** repository → *Settings* → *Pages* → under *Build and
-   deployment*, set **Source** to **GitHub Actions**. (Not "Deploy from a branch"
-   — the workflow does the publishing.)
-4. **Watch the first deploy** on the *Actions* tab. It takes about a minute, and
-   ends with the live URL.
-5. **Check the custom domain took.** The `CNAME` file in this repository sets it
-   automatically on the first deploy, so *Settings* → *Pages* → *Custom domain*
-   should already read `ozay.in`. Tick **Enforce HTTPS** once it becomes
-   selectable — the certificate can take up to an hour to issue, and the box
-   stays greyed out until DNS resolves.
+1. **Default branch is `main`** — *Settings → General → Default branch*. The
+   workflow only triggers on pushes to `main`.
+2. **Pages source is GitHub Actions** — *Settings → Pages → Build and deployment
+   → Source*. Not "Deploy from a branch"; the workflow does the publishing.
+3. **The `github-pages` environment allows `main`** — *Settings → Environments →
+   github-pages → Deployment branches and tags*. This repository previously
+   deployed from `master`, so the environment may still be pinned to it. A run
+   that fails with *"Branch main is not allowed to deploy to github-pages due to
+   environment protection rules"* means this needs fixing.
 
-> **Order matters here.** Because `CNAME` claims `ozay.in` the moment the first
-> deploy finishes, GitHub immediately starts redirecting `ozay.github.io` to
-> `ozay.in`. If the DNS below has not moved yet, that redirect leads nowhere and
-> the site will look broken for a while — it is not. Either change the DNS first
-> and then push, or, if you want to eyeball the site on `ozay.github.io` before
-> touching the domain, delete `CNAME`, push, look, then add it back:
->
-> ```bash
-> git rm CNAME && git commit -m "Hold the custom domain for now" && git push
-> ```
-
-### DNS
-
-At whoever manages `ozay.in`, replace the Google Sites records with these:
-
-| Type | Name | Value |
-|---|---|---|
-| A | `@` | `185.199.108.153` |
-| A | `@` | `185.199.109.153` |
-| A | `@` | `185.199.110.153` |
-| A | `@` | `185.199.111.153` |
-| CNAME | `www` | `ozay.github.io.` |
-
-Use the four A records together — they are GitHub's load-balanced set, not
-alternatives. If you prefer IPv6, GitHub also publishes AAAA records; the A
-records alone are enough. Propagation usually takes minutes but can take a day.
-
-Once DNS has propagated, `ozay.github.io` redirects to `ozay.in` automatically,
-and the `www` record sends `www.ozay.in` to the same place.
-
-### Afterwards
-
-Every later change is just:
+### Everyday use
 
 ```bash
 git add -A && git commit -m "Add autumn 2027 courses" && git push
 ```
 
+Watch the run on the *Actions* tab; it takes about a minute.
+
+### Using a custom domain later
+
+Nothing here is locked to `ozay.github.io`. To move the site to your own domain:
+
+1. Add a file named `CNAME` at the root of this repository containing just the
+   domain, e.g. `ozay.in`.
+2. Point the domain's DNS at GitHub — four A records on the apex
+   (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`)
+   and a `CNAME` record for `www` pointing at `ozay.github.io.`.
+3. Update the absolute URLs that refer to the site by name: the
+   `<link rel="canonical">` and `<meta property="og:url">` tags in each HTML
+   file, the `Sitemap:` line in `robots.txt`, and every `<loc>` in `sitemap.xml`.
+
+Do the DNS before adding `CNAME`. Pages sets the custom domain the moment a
+deploy sees that file, and immediately starts redirecting `ozay.github.io` to it —
+which goes nowhere until DNS has propagated.
+
 ### Old Google Sites links
 
-These will not resolve on the new site. Set up redirects at your DNS or host if
-you want to preserve them:
+The previous site was on Google Sites. These paths will not resolve here:
 
 | Old | New |
 |---|---|
@@ -192,9 +173,6 @@ you want to preserve them:
 | `/courses` | `teaching.html` |
 | `/publications` | `research.html` |
 | `/contact` | `contact.html` |
-
-`sitemap.xml` and `robots.txt` both assume `https://ozay.in`. Add new posts to the
-sitemap as you publish them.
 
 ### A caution about Dropbox
 

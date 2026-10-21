@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ozay.in/sitemap.xml
+Sitemap: https://ozay.github.io/sitemap.xml
