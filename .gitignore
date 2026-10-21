@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Dropbox
+.dropbox
+.dropbox.attr
+*conflicted copy*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Local server / scratch
+*.log
