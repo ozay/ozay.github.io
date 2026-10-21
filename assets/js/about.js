@@ -44,6 +44,8 @@
         });
       }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
       host.querySelectorAll(".reveal").forEach(el => io.observe(el));
+      // Same backstop as site.js: a missed callback must not hide the timeline.
+      setTimeout(() => host.querySelectorAll(".reveal").forEach(el => el.classList.add("is-in")), 2500);
     }
   }
 

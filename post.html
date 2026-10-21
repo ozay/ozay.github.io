@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="assets/css/pages.css">
 <script>
 /* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem("ozay-theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);var l=localStorage.getItem("ozay-lang");if(l==="tr"||l==="en")document.documentElement.setAttribute("lang",l);}catch(e){}})();
+(function(){document.documentElement.classList.add("js");try{var t=localStorage.getItem("ozay-theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);var l=localStorage.getItem("ozay-lang");if(l==="tr"||l==="en")document.documentElement.setAttribute("lang",l);}catch(e){}})();
 </script>
 
 </head>

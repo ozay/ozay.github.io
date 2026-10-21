@@ -348,9 +348,11 @@ select.filter-select {
 .empty-state { text-align: center; padding: 3.5rem 1rem; color: var(--ink-3); }
 
 /* ---------------------------------------------------------------- reveal -- */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .62s var(--ease), transform .62s var(--ease); }
-.reveal.is-in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+/* Scoped to .js so that if the stylesheet loads but the script does not, the
+   content is simply visible rather than permanently transparent. */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .62s var(--ease), transform .62s var(--ease); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .reveal { opacity: 1; transform: none; } }
 
 /* --------------------------------------------------------------- footer -- */
 .footer { border-top: 1px solid var(--line); background: var(--bg-2); padding-block: 3rem 2rem; }

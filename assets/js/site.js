@@ -130,6 +130,10 @@
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     items.forEach(el => io.observe(el));
+
+    // Backstop: anything still hidden after a few seconds is shown regardless.
+    // A missed observer callback must never cost the reader the content.
+    setTimeout(() => items.forEach(el => el.classList.add("is-in")), 2500);
   }
 
   /* -------------------------------------------------------- counters --- */
@@ -141,6 +145,7 @@
       if (reduced) { el.textContent = String(to); return; }
       // A background or non-composited page never delivers an animation
       // frame, so write the real number if the first frame does not arrive.
+      el.dataset.counted = "1";
       let started = false;
       const fallback = setTimeout(() => { if (!started) el.textContent = String(to); }, 500);
       const dur = 1100, t0 = performance.now();
@@ -158,7 +163,15 @@
     const io = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
     }, { threshold: 0.4 });
-    nums.forEach(el => io.observe(el));
+    nums.forEach(el => {
+      io.observe(el);
+      // These are figures, not decoration. If the observer never delivers —
+      // a background render, an aborted paint — the real number must still
+      // appear rather than leaving a placeholder on screen.
+      setTimeout(() => {
+        if (!el.dataset.counted) { el.dataset.counted = "1"; el.textContent = el.dataset.countTo; }
+      }, 1200);
+    });
   }
 
   /* ---------------------------------------------------- hero rotator --- */
