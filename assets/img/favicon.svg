@@ -1,11 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="Özay Özaydın">
+  <!-- Same geometry as logo.svg, centred in a square for tab icons. -->
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#b4452b"/>
-      <stop offset="100%" stop-color="#1f5f6b"/>
-    </linearGradient>
+    <mask id="fv-holes">
+      <rect width="300" height="300" fill="#fff"/>
+      <circle cx="100" cy="150" r="60" fill="#000"/>
+      <circle cx="200" cy="150" r="60" fill="#000"/>
+    </mask>
+    <clipPath id="fv-left">
+      <circle cx="100" cy="150" r="100"/>
+    </clipPath>
   </defs>
-  <rect width="64" height="64" rx="15" fill="url(#g)"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-        font-size="30" fill="#ffffff">ÖÖ</text>
+  <g mask="url(#fv-holes)">
+    <circle cx="100" cy="150" r="100" fill="#F7941E"/>
+    <circle cx="200" cy="150" r="100" fill="#1C75BC"/>
+    <g clip-path="url(#fv-left)">
+      <circle cx="200" cy="150" r="100" fill="#5FB8FF"/>
+    </g>
+  </g>
 </svg>

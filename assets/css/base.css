@@ -188,13 +188,9 @@ section { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
 .nav .wrap { display: flex; align-items: center; gap: 1rem; }
 
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 600; letter-spacing: -.02em; margin-right: auto; }
-.brand-mark {
-  width: 30px; height: 30px; border-radius: 9px; flex: none;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  display: grid; place-items: center;
-  color: #fff; font-family: var(--font-display); font-size: .95rem; line-height: 1;
-  box-shadow: 0 2px 8px -2px color-mix(in srgb, var(--accent) 55%, transparent);
-}
+/* The mark is 3:2 artwork with transparent counters, so the page background
+   shows through them in either theme. */
+.brand-mark { width: 42px; height: 28px; flex: none; }
 .brand-name { font-size: .98rem; }
 .brand-name small { display: block; font-size: .68rem; font-weight: 400; color: var(--ink-3); letter-spacing: 0; line-height: 1.1; }
 

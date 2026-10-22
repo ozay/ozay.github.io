@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" role="img" aria-label="Özay Özaydın">
+  <!--
+    Rebuilt from OO-Logo.ai as exact circle geometry rather than traced paths.
+    Two discs r=100 with centres 100 apart; holes r=60, concentric with each.
+    Painter's order gives the three flat colours: orange disc, blue disc over
+    it, then the lens where they intersect. The holes are punched by a mask, so
+    they are transparent and the page background shows through.
+  -->
+  <defs>
+    <mask id="oo-holes">
+      <rect width="300" height="200" fill="#fff"/>
+      <circle cx="100" cy="100" r="60" fill="#000"/>
+      <circle cx="200" cy="100" r="60" fill="#000"/>
+    </mask>
+    <clipPath id="oo-left">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+
+  <g mask="url(#oo-holes)">
+    <circle cx="100" cy="100" r="100" fill="#F7941E"/>
+    <circle cx="200" cy="100" r="100" fill="#1C75BC"/>
+    <g clip-path="url(#oo-left)">
+      <circle cx="200" cy="100" r="100" fill="#5FB8FF"/>
+    </g>
+  </g>
+</svg>
