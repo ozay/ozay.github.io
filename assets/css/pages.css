@@ -222,7 +222,20 @@
 .center-pane { min-height: 62vh; display: grid; place-items: center; text-align: center; }
 .tool-group { margin-bottom: 1.6rem; }
 .tool-group h4 { font-size: .95rem; margin-bottom: .5rem; }
-.tool-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+/* ------------------------------------------------------- workbench list -- */
+.tool-list { list-style: none; display: flex; flex-direction: column; gap: .95rem; }
+.tool-name {
+  display: inline-flex; align-items: center; gap: .3rem;
+  width: fit-content; max-width: 100%;
+  font-size: .93rem; font-weight: 600; line-height: 1.35; color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-2);
+  transition: color .2s, border-color .2s;
+}
+.tool-name:hover { color: var(--accent-ink); border-color: var(--accent); }
+.tool-name svg { width: 10px; height: 10px; flex: none; opacity: .45; transition: opacity .2s; }
+.tool-name:hover svg { opacity: 1; }
+.tool-note { margin-top: .22rem; font-size: .83rem; line-height: 1.55; color: var(--ink-3); }
 .notice { background: var(--accent-2-soft); border: 1px solid color-mix(in srgb, var(--accent-2) 30%, transparent); color: var(--ink-2); padding: .9rem 1.1rem; border-radius: var(--r); font-size: .88rem; }
 
 /* ---------------------------------------------------------------- talks -- */
