@@ -61,7 +61,67 @@ The two posts currently published are starters written to get the blog going.
 Edit or delete them as you like; delete both the `.md` files and the entry in
 `posts.js`.
 
-## How the bilingual setup works
+## Presentations
+
+Talks and lectures are HTML slide decks that share one engine,
+`assets/deck/deck.js` and `deck.css`. A deck supplies its slides and its look;
+the engine supplies everything else, the same way in every deck.
+
+### A new deck
+
+1. Copy `talks/_template/` to `talks/<year>-<event>-<topic>/`, for example
+   `talks/2027-icors-sdg-network/`. For a lecture, copy it to
+   `courses/<code>/week-NN/` instead, and add one more `../` to the asset paths
+   in its `<head>` and at the end of `<body>`.
+2. Set the `<title>` and the canonical link to the deck's new address. The QR
+   codes point at that address.
+3. Write the slides, one `<section class="slide" data-title="…">` each. The
+   `data-title` is what the overview and the presenter view show.
+
+The template's comments explain the rest. Useful pieces inside a slide:
+
+| Markup | What it does |
+|---|---|
+| `<aside class="notes">…</aside>` | Speaker notes. Shown only in the presenter view. |
+| `<div class="deck-qr"></div>` | A QR code to the deck's own address. |
+| `<div class="deck-brand"></div>` | Your logo and name. |
+| `<button data-go="7">` | Jumps to slide 7. |
+| `\( … \)` and `\[ … \]` | Maths, if the deck loads MathJax (the template does). |
+
+And on the `<main data-deck>` element: `data-back` / `data-back-label` for the
+link at the left of the bar, `data-label` for a context line such as
+"ENMU2050 · Week 1", and `data-themes="light dark"` to offer a dark mode.
+
+A deck's own script goes after `deck.js` and can react to slides with
+`Deck.onEnter(5, () => { … })`. The Kapıkule deck uses this to animate its charts.
+
+### Presenting
+
+| Key | |
+|---|---|
+| `→` `←` (or Space) | next / previous slide |
+| `O` | overview of all slides |
+| `F` | full screen |
+| `P` | presenter view: current and next slide, your notes, a timer and a clock |
+| `B` | black screen, for discussion; press again to return |
+| digits, then `Enter` | jump to that slide, e.g. `1` `2` `Enter` |
+
+**Presenter view.** Press `P` and allow the pop-up. Put the presenter window on
+your laptop screen and the deck on the projector. Moving in either window moves
+both.
+
+**Without internet.** Fonts, maths and the QR library are part of the site, so a
+deck needs nothing from the internet. To present at a venue with bad Wi-Fi, open
+the deck's `index.html` straight from this folder. **Try that once with Wi-Fi off
+before the day:** some browsers refuse web fonts on pages opened from disk, in
+which case the slides fall back to a system font. Maths and everything else keep
+working.
+
+**A PDF for organisers.** Print the deck and choose "Save as PDF". Each slide
+becomes one 16:9 page, in the light theme, without the controls or your notes.
+Interactive figures print as they currently look.
+
+
 
 Two mechanisms, deliberately:
 
@@ -89,12 +149,20 @@ assets/
   js/home.js  about.js  research.js  teaching.js  blog.js  post.js
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
   data/             the four content files
-  img/favicon.svg
+  img/logo.svg  favicon.svg
+  deck/             the shared slide engine (see "Presentations")
+    deck.css  deck.js
+    fonts/          Archivo and Overpass, served locally
+    vendor/         MathJax 3.2.2 and qrcode-generator 1.4.4
 content/posts/      the Markdown posts
+talks/<slug>/       one folder per talk; talks/_template/ is the starter
+courses/<code>/<week>/   lecture decks, e.g. courses/enmu2050/week-01/
+
+kapikule.html  multivariate-week1-trial.html
+                    old addresses that now forward to the new ones
 
 .nojekyll           stops GitHub Pages running Jekyll over the folder
 .github/workflows/  the Pages deploy job
-.claude/            local preview config for Claude Code; gitignored, never published
 ```
 
 This folder is the whole repository. It sits inside `Assets/Website/`, which is

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Talk title — Özay Özaydın</title>
+<!--
+  STARTER DECK. Copy this folder to talks/<year>-<event>-<topic>/ and edit.
+  For a lecture, copy it to courses/<code>/week-NN/ instead and add one more
+  "../" to the three asset paths below (deck.css, archivo.css, deck.js) and to
+  MathJax.
+
+  Everything a slide needs is in the README under "Presentations".
+  This template is not linked from the site and asks search engines to skip it.
+-->
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://ozay.github.io/talks/_template/">
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/deck/fonts/archivo.css">
+<link rel="stylesheet" href="../../assets/deck/deck.css">
+<script>
+/* Use the visitor's stored light/dark choice before the first paint. */
+(function(){try{var t=localStorage.getItem("ozay-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})();
+</script>
+<style>
+/* ---- this deck's look: change freely ---- */
+:root {
+  --bg: #faf9f7; --ink: #15161a; --muted: #5d606b; --line: #e4ded5; --panel: #ffffff; --accent: #b4452b;
+  --deck-bg: var(--bg); --deck-ink: var(--ink); --deck-muted: var(--muted); --deck-accent: var(--accent);
+  --deck-bar-bg: var(--panel); --deck-bar-ink: var(--ink); --deck-bar-line: var(--line);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0f1013; --ink: #eceef2; --muted: #a2a7b3; --line: #2a2e37; --panel: #17191e; --accent: #ff7a59;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1013; --ink: #eceef2; --muted: #a2a7b3; --line: #2a2e37; --panel: #17191e; --accent: #ff7a59;
+    color-scheme: dark;
+  }
+}
+body { font-size: clamp(16px, 1.05vw + 7px, 21px); line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; min-height: 100%; display: flex; flex-direction: column; }
+h1 { font-size: clamp(2.4rem, 5.4vw, 4.8rem); line-height: 1; letter-spacing: -.03em; font-weight: 640; margin: .3em 0 .35em; }
+h2 { font-size: clamp(1.6rem, 2.6vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em; font-weight: 620; margin: 0 0 .7em; }
+p, li { max-width: 62ch; }
+.muted { color: var(--muted); }
+.kicker { text-transform: uppercase; letter-spacing: .14em; font-size: .75em; font-weight: 650; color: var(--accent); margin: 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 4vw, 56px); align-items: start; }
+@media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1em 1.2em; }
+.title-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; padding-top: 24px; }
+.end { justify-content: center; align-items: flex-start; }
+</style>
+</head>
+<body>
+
+<main data-deck
+      data-back="../../research.html" data-back-label="Research"
+      data-themes="light dark">
+
+<!-- 1 · title: the brand and the QR code fill themselves in -->
+<section class="slide" data-title="Title">
+  <div class="wrap">
+    <p class="kicker">Event name · City · 1 January 2027</p>
+    <h1>Talk title goes here</h1>
+    <p class="muted">One line that says what the audience will leave knowing.</p>
+    <div class="title-foot">
+      <div class="deck-brand"></div>
+      <div class="deck-qr"></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Speaker notes live in an <code>aside class="notes"</code> inside each slide.
+    They never show on the slide; press P to open the presenter view.</p>
+  </aside>
+</section>
+
+<!-- 2 · ordinary content -->
+<section class="slide" data-title="A content slide">
+  <div class="wrap">
+    <h2>A content slide</h2>
+    <div class="two">
+      <div>
+        <p>Write slides as plain HTML. Each <code>section class="slide"</code> is one slide;
+        its <code>data-title</code> appears in the overview (press O).</p>
+        <p><button data-go="4">Buttons with data-go jump to a slide</button></p>
+      </div>
+      <div class="box">
+        <p class="kicker">Tip</p>
+        <p>Content taller than the screen scrolls inside the slide, so a slide still reads on a phone.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes"><p>Notes can be several paragraphs.</p><p>Keep them short enough to glance at.</p></aside>
+</section>
+
+<!-- 3 · maths: delete the MathJax lines at the bottom if a deck has none -->
+<section class="slide" data-title="Maths">
+  <div class="wrap">
+    <h2>Maths renders offline</h2>
+    <p>Inline \(\mathbf A\cdot\mathbf B = |\mathbf A||\mathbf B|\cos\theta\), and displayed:</p>
+    \[ \operatorname{proj}_{\mathbf B}\mathbf A = \frac{\mathbf A\cdot\mathbf B}{|\mathbf B|^2}\,\mathbf B \]
+  </div>
+</section>
+
+<!-- 4 · closing: the QR code again, for the people who missed it at the start -->
+<section class="slide" data-title="Thank you">
+  <div class="wrap end">
+    <h1>Thank you</h1>
+    <p class="muted">Questions and discussion</p>
+    <div class="title-foot"><div class="deck-brand"></div><div class="deck-qr"></div></div>
+  </div>
+</section>
+
+</main>
+
+<script src="../../assets/deck/deck.js"></script>
+<script>
+/* A deck's own scripts go here, after deck.js. To run something each time a
+   slide appears:  Deck.onEnter(3, () => { … });  */
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" }, options: { enableMenu: false } };
+</script>
+<script src="../../assets/deck/vendor/mathjax/tex-svg-full.js" async></script>
+</body>
+</html>

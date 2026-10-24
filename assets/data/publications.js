@@ -4,7 +4,7 @@
    tags   -> free-form keywords, used by the search box
    doi    -> optional; when present the card shows a DOI button
    link   -> optional extra button, e.g. a slide deck or a dataset:
-             { href: "kapikule.html", labelEn: "Slide deck", labelTr: "Sunum" }
+             { href: "talks/2026-bsec-kapikule/", labelEn: "Slide deck", labelTr: "Sunum" }
 --------------------------------------------------------------------------- */
 
 window.SITE_TOPICS = {
@@ -66,7 +66,7 @@ window.SITE_PUBLICATIONS = [
     topic: "transport",
     tags: ["simulation", "border crossing", "Kapıkule", "queueing"],
     doi: "",
-    link: { href: "kapikule.html", labelEn: "Slide deck", labelTr: "Sunum" }
+    link: { href: "talks/2026-bsec-kapikule/", labelEn: "Slide deck", labelTr: "Sunum" }
   },
   {
     year: 2020,

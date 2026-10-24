@@ -1,0 +1,467 @@
+/* ===========================================================================
+   Shared slide engine — layout, slide switching, controls, overview,
+   presenter view and print. Pair with deck.js.
+
+   A deck themes the engine by setting the --deck-* custom properties and
+   styles its own slide content however it likes. Engine defaults that a
+   deck may reasonably want to restyle sit inside :where(), which carries
+   no specificity, so any plain selector in the deck wins.
+   =========================================================================== */
+
+:where(:root) {
+  --deck-bg: #faf9f7;
+  --deck-ink: #15161a;
+  --deck-muted: #6b6e78;
+  --deck-accent: #b4452b;
+  --deck-font: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --deck-bar-bg: #ffffff;
+  --deck-bar-ink: #15161a;
+  --deck-bar-muted: #6b6e78;
+  --deck-bar-line: #e4ded5;
+  --deck-bar-accent: var(--deck-accent);
+  --deck-bar-h: 58px;
+
+  --deck-shift: 18px;          /* how far slides travel as they change */
+  --deck-speed: .4s;
+  --deck-qr-size: 132px;
+}
+
+/* ------------------------------------------------------------- frame --- */
+:where(html.deck-html, html.deck-html body) { height: 100%; margin: 0; }
+:where(body.deck-body) {
+  background: var(--deck-bg);
+  color: var(--deck-ink);
+  font-family: var(--deck-font);
+  overflow: hidden;
+}
+
+.deck-root {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  /* an explicit column, or a long slide title in the bar widens the whole deck past the window */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: "stage" "bar";
+}
+.deck-stage {
+  grid-area: stage;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  outline: none;
+}
+
+/* ------------------------------------------------------------ slides --- */
+.deck-stage > .slide {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(var(--deck-shift));
+  transition: opacity var(--deck-speed) ease, transform var(--deck-speed) ease, visibility 0s var(--deck-speed);
+}
+.deck-stage > .slide.is-past { transform: translateX(calc(-1 * var(--deck-shift))); }
+.deck-stage > .slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--deck-speed) ease, transform var(--deck-speed) ease;
+}
+/* no animation on first paint, only once the deck is running */
+.deck-root:not(.is-ready) .deck-stage > .slide { transition: none; }
+
+:where(.deck-stage > .slide) {
+  box-sizing: border-box;
+  padding: clamp(20px, 3.2vw, 52px) clamp(18px, 4.5vw, 72px) 32px;
+}
+
+/* speaker notes never show on the slide itself */
+.deck-stage .notes { display: none !important; }
+
+/* --------------------------------------------------------------- bar --- */
+:where(.deck-bar) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--deck-bar-h);
+  padding: 0 14px env(safe-area-inset-bottom, 0px);
+  background: var(--deck-bar-bg);
+  color: var(--deck-bar-ink);
+  border-top: 1px solid var(--deck-bar-line);
+  font-family: var(--deck-font);
+  font-size: 14px;
+  line-height: 1;
+}
+.deck-bar { grid-area: bar; position: relative; z-index: 20; }
+
+.deck-bar button, .deck-bar a { font: inherit; color: inherit; }
+
+:where(.deck-btn) {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--deck-bar-line);
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  padding: 0;
+}
+:where(.deck-btn:hover:not(:disabled)) { border-color: var(--deck-bar-accent); color: var(--deck-bar-accent); }
+.deck-btn:disabled { opacity: .35; cursor: default; }
+
+:where(.deck-tool, .deck-back) {
+  flex: none;
+  height: 32px;
+  border-radius: 16px;
+  border: 1.5px solid var(--deck-bar-line);
+  background: transparent;
+  padding: 0 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+:where(.deck-tool:hover, .deck-back:hover) { border-color: var(--deck-bar-accent); color: var(--deck-bar-accent); }
+.deck-tool[hidden] { display: none; }
+
+:where(.deck-track) {
+  position: relative;
+  flex: 1;
+  min-width: 40px;
+  height: 30px;
+  cursor: pointer;
+}
+:where(.deck-track)::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 3px; margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--deck-bar-line);
+}
+:where(.deck-track-fill) {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 0;
+  height: 3px; margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--deck-bar-accent);
+  transition: width .5s ease;
+}
+:where(.deck-stops) { display: none; }
+:where(.deck-stop) {
+  position: absolute;
+  top: 50%;
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: var(--deck-bar-line);
+  cursor: pointer;
+}
+:where(.deck-stop.on) { background: var(--deck-bar-accent); }
+.deck-marker {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  transition: left .6s cubic-bezier(.5, 0, .2, 1);
+  pointer-events: none;
+  line-height: 0;
+}
+.deck-marker:empty { display: none; }
+
+:where(.deck-count) {
+  flex: none;
+  min-width: 4.6em;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the deck's own label plus the current slide title — off unless a deck wants it */
+:where(.deck-where) {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: .9em;
+  align-items: baseline;
+  white-space: nowrap;
+  overflow: hidden;
+}
+:where(.deck-label) { flex: none; color: var(--deck-bar-muted); font-size: .92em; }
+/* when space runs out, the slide title gives way first and ends in an ellipsis */
+:where(.deck-slide-title) { flex: 0 1 auto; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-width: 700px) {
+  .deck-bar .hide-sm { display: none !important; }
+  .deck-back-label { display: none; }
+  :where(.deck-bar) { gap: 7px; padding-left: 10px; padding-right: 10px; }
+  :where(.deck-count) { min-width: 3.6em; }
+}
+
+/* ---------------------------------------------------------- overview --- */
+.deck-overview {
+  grid-area: stage;
+  z-index: 15;
+  overflow-y: auto;
+  background: var(--deck-bg);
+  color: var(--deck-ink);
+  padding: clamp(18px, 3vw, 40px);
+}
+.deck-overview[hidden] { display: none; }
+.deck-ov-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto 16px;
+}
+.deck-ov-head h2 { margin: 0; font: 700 1.35em/1.2 var(--deck-font); }
+.deck-ov-head button {
+  font: 600 13px var(--deck-font);
+  border: 1.5px solid currentColor;
+  border-radius: 16px;
+  background: transparent;
+  color: inherit;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.deck-ov-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+.deck-ov-grid button {
+  text-align: left;
+  font: 500 .95em/1.3 var(--deck-font);
+  color: inherit;
+  background: color-mix(in srgb, var(--deck-ink) 4%, var(--deck-bg));
+  border: 1.5px solid color-mix(in srgb, var(--deck-ink) 14%, transparent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: 84px;
+  cursor: pointer;
+}
+.deck-ov-grid button small {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--deck-accent);
+}
+.deck-ov-grid button:hover,
+.deck-ov-grid button.is-current { border-color: var(--deck-accent); }
+.deck-ov-keys {
+  max-width: 1200px;
+  margin: 22px auto 0;
+  font: 13px/1.9 var(--deck-font);
+  color: var(--deck-muted);
+}
+.deck-ov-keys kbd {
+  font: 600 12px var(--deck-font);
+  border: 1px solid color-mix(in srgb, var(--deck-ink) 25%, transparent);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 1px 6px;
+  margin-right: 3px;
+}
+
+/* --------------------------------------------------------- utilities --- */
+.deck-blackout {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  cursor: none;
+}
+.deck-blackout[hidden] { display: none; }
+
+.deck-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--deck-bar-h) + 16px);
+  transform: translateX(-50%);
+  z-index: 90;
+  background: #15161a;
+  color: #fff;
+  font: 500 14px/1.4 var(--deck-font);
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px -10px #0008;
+  max-width: min(90vw, 520px);
+}
+.deck-toast[hidden] { display: none; }
+
+.deck-live {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* logo + name, filled in by deck.js wherever .deck-brand appears */
+:where(.deck-brand) {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  font-weight: 600;
+}
+:where(.deck-brand img) { height: 1.5em; width: auto; display: block; }
+
+/* QR code to the deck's own address, filled in wherever .deck-qr appears */
+:where(.deck-qr) {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45em;
+}
+.deck-qr svg {
+  display: block;
+  width: var(--deck-qr-size);
+  height: auto;
+  background: #fff;
+  border-radius: 8px;
+}
+:where(.deck-qr-url) { font-size: .72em; font-weight: 600; opacity: .85; letter-spacing: .01em; }
+
+/* ------------------------------------------------------ embedded view --- */
+/* the presenter view loads the deck in frames; those show the slide only */
+.deck-root[data-mode="embed"] { grid-template-rows: minmax(0, 1fr); grid-template-areas: "stage"; }
+.deck-root[data-mode="embed"] .deck-bar { display: none; }
+
+/* --------------------------------------------------------- presenter --- */
+body.deck-presenter-body { background: #101113; overflow: hidden; }
+body.deck-presenter-body .deck-root { display: none; }
+.deck-presenter {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "head head" "cur side";
+  gap: 14px;
+  padding: 14px;
+  color: #e9eaee;
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.p-head {
+  grid-area: head;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.p-timer { display: flex; align-items: center; gap: 8px; }
+.p-elapsed { font: 700 30px/1 ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; min-width: 4.2ch; }
+.p-elapsed.is-paused { color: #e6a93c; }
+.p-clock { font: 600 18px/1 ui-monospace, "SF Mono", Menlo, monospace; color: #9ea3ad; margin-right: auto; }
+.p-nav { display: flex; align-items: center; gap: 10px; }
+.p-count { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: center; font-size: 17px; }
+.deck-presenter button {
+  font: 600 13px system-ui, sans-serif;
+  color: #e9eaee;
+  background: #1d1f24;
+  border: 1px solid #353943;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.deck-presenter button:hover { border-color: #8a90a0; }
+.p-nav button { font-size: 20px; padding: 4px 14px; }
+.p-cur { grid-area: cur; min-height: 0; display: flex; flex-direction: column; }
+.p-side { grid-area: side; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+.p-label { font: 600 11px system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #8a90a0; margin: 0 0 6px; }
+.p-frame {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  border-radius: 8px;
+  border: 1px solid #2a2d34;
+}
+.p-frame iframe {
+  position: absolute;
+  top: 0; left: 0;
+  border: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.p-frame.p-done::after {
+  content: attr(data-msg);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #8a90a0;
+  font-weight: 600;
+}
+.p-frame.p-done iframe { visibility: hidden; }
+.p-notes {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: #17181c;
+  border: 1px solid #2a2d34;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 19px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+.p-notes p { margin: 0 0 .7em; }
+.p-notes .p-empty { color: #6f7480; font-style: italic; }
+@media (max-width: 900px) {
+  .deck-presenter { grid-template-columns: 1fr; grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "head" "cur" "side"; overflow-y: auto; }
+}
+
+/* ------------------------------------------------------ reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .deck-stage > .slide, .deck-stage > .slide.is-active,
+  .deck-track-fill, .deck-marker { transition: none !important; }
+}
+
+/* ------------------------------------------------------------- print --- */
+/* One slide per 16:9 page, so "Print → Save as PDF" gives organisers a
+   PDF of the deck. Interactive figures print in whatever state they are in. */
+@media print {
+  @page { size: 13.333in 7.5in; margin: 0; }
+  html, body { height: auto !important; overflow: visible !important; background: var(--deck-bg) !important; }
+  .deck-bar, .deck-overview, .deck-blackout, .deck-toast, .deck-live, .deck-presenter { display: none !important; }
+  .deck-root { position: static !important; display: block !important; }
+  .deck-stage { overflow: visible !important; height: auto !important; }
+  .deck-stage > .slide {
+    position: relative !important;
+    inset: auto !important;
+    width: 13.333in;
+    height: 7.5in;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  .deck-stage > .slide:last-child { break-after: auto; page-break-after: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
