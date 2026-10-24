@@ -13,6 +13,13 @@
      data-themes="light dark"          offer a light/dark toggle
      data-author="Özay Özaydın"        name shown by .deck-brand
      data-url="https://…"              address for .deck-qr (else the canonical link)
+     data-size="1600x900"              lay slides out on a fixed canvas, scaled to fit
+                                       (leave it off for slides that reflow to the window)
+
+   On a slide
+     data-steps="3"                    states 0–3 inside the slide: → moves through
+                                       them before the next slide, ← back through them
+     data-notes="…"                    speaker notes as plain text (or use an aside, below)
 
    Inside slides
      <aside class="notes">…</aside>    speaker notes, shown in the presenter view only
@@ -22,8 +29,10 @@
 
    For the deck's own scripts (window.Deck)
      Deck.go(n)  Deck.next()  Deck.prev()  Deck.current  Deck.count
-     Deck.onEnter(n, fn)   run fn each time slide n (1-based) becomes current
-     The same moment is also a 'deck:enter' event on document, detail {index, slide}.
+     Deck.onEnter(n, fn)   run fn(slide, step) each time slide n (1-based) becomes current
+     Deck.onStep(n, fn)    run fn(step) each time slide n shows a step, including on entry
+     Deck.step             the current step; Deck.setStep(k) moves to step k
+     Entering a slide is also a 'deck:enter' event on document, detail {index, slide}.
    =========================================================================== */
 (function () {
   "use strict";
@@ -51,14 +60,16 @@
     slide: "Slayt", of: "/", popup: "Sunucu görünümü için açılır pencerelere izin verin.",
     current: "Şimdiki", upNext: "Sıradaki", notes: "Notlar", noNotes: "Bu slayt için not yok.",
     end: "Sunumun sonu", pause: "Duraklat", resume: "Sürdür", reset: "Sıfırla",
-    keys: ["sonraki / önceki", "slaytlar", "tam ekran", "sunucu görünümü", "siyah ekran", "o slayta git", "kapat"]
+    pdf: "PDF", preparing: "PDF hazırlanıyor: her slayt son hâline getiriliyor…",
+    keys: ["sonraki / önceki", "slaytlar", "tam ekran", "sunucu görünümü", "siyah ekran", "o slayta git", "kapat", "PDF olarak yazdır"]
   } : {
     prev: "Previous slide", next: "Next slide", slides: "Slides", all: "All slides", close: "Close",
     presenter: "Presenter", fs: "Full screen", fsExit: "Exit full screen", dark: "Dark", light: "Light",
     slide: "Slide", of: "of", popup: "Allow pop-ups for this site to open the presenter view.",
     current: "Current", upNext: "Next", notes: "Notes", noNotes: "No notes for this slide.",
     end: "End of deck", pause: "Pause", resume: "Resume", reset: "Reset",
-    keys: ["next / previous", "all slides", "full screen", "presenter view", "black screen", "go to that slide", "close"]
+    pdf: "PDF", preparing: "Preparing the PDF: bringing every slide to its final state…",
+    keys: ["next / previous", "all slides", "full screen", "presenter view", "black screen", "go to that slide", "close", "print to PDF"]
   };
 
   const titleOf = (s, i) =>
@@ -66,7 +77,15 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   let cur = 0;                // 1-based once the deck starts
-  const hooks = {};
+  let step = 0;               // position inside a slide that has data-steps
+  const hooks = {}, stepHooks = {};
+  const stepsOf = n => Math.max(0, parseInt(slides[n - 1].dataset.steps, 10) || 0);
+  const notesOf = s => {
+    const a = s.querySelector(".notes");
+    if (a && a.innerHTML.trim()) return a.innerHTML;
+    const t = (s.dataset.notes || "").trim();
+    return t ? `<p>${esc(t)}</p>` : "";
+  };
 
   /* ------------------------------------------------------------ theme --- */
   const themes = (deckEl.dataset.themes || "").split(/\s+/);
@@ -86,6 +105,27 @@
   shell.appendChild(deckEl);
   deckEl.classList.add("deck-stage");
   deckEl.setAttribute("tabindex", "-1");
+
+  // fixed-canvas decks: slides keep their designed size and the canvas is scaled to fit
+  const size = /^(\d+)\s*[x×]\s*(\d+)$/.exec(deckEl.dataset.size || "");
+  if (size) {
+    const W = +size[1], H = +size[2];
+    const canvas = document.createElement("div");
+    canvas.className = "deck-canvas";
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    slides.forEach(s => canvas.appendChild(s));
+    deckEl.appendChild(canvas);
+    const fit = () => {
+      const k = Math.min(deckEl.clientWidth / W, deckEl.clientHeight / H) || 1;
+      canvas.style.transform = `translate(-50%, -50%) scale(${k})`;
+    };
+    new ResizeObserver(fit).observe(deckEl);
+    fit();
+    const pageCss = document.createElement("style");
+    pageCss.textContent = `@media print{@page{size:${W}px ${H}px;margin:0}.deck-canvas>.slide{width:${W}px!important;height:${H}px!important}}`;
+    document.head.appendChild(pageCss);
+  }
 
   const backHref = deckEl.dataset.back;
   const bar = document.createElement("nav");
@@ -137,10 +177,10 @@
   ov.setAttribute("role", "dialog");
   ov.setAttribute("aria-label", T.all);
   ov.innerHTML =
-    `<div class="deck-ov-head"><h2>${T.all}</h2><button type="button" data-act="overview-close">${T.close}</button></div>` +
+    `<div class="deck-ov-head"><h2>${T.all}</h2><span><button type="button" data-act="print">${T.pdf}</button> <button type="button" data-act="overview-close">${T.close}</button></span></div>` +
     `<div class="deck-ov-grid">${slides.map((s, i) => `<button type="button" data-go="${i + 1}"><small>${i + 1}</small>${esc(titleOf(s, i))}</button>`).join("")}</div>` +
     `<p class="deck-ov-keys"><kbd>→</kbd><kbd>←</kbd>${T.keys[0]} &nbsp; <kbd>O</kbd>${T.keys[1]} &nbsp; <kbd>F</kbd>${T.keys[2]} &nbsp; ` +
-    `<kbd>P</kbd>${T.keys[3]} &nbsp; <kbd>B</kbd>${T.keys[4]} &nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>↵</kbd>${T.keys[5]} &nbsp; <kbd>Esc</kbd>${T.keys[6]}</p>`;
+    `<kbd>P</kbd>${T.keys[3]} &nbsp; <kbd>B</kbd>${T.keys[4]} &nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>↵</kbd>${T.keys[5]} &nbsp; <kbd>Esc</kbd>${T.keys[6]} &nbsp; <kbd>⌘P</kbd>${T.keys[7]}</p>`;
   shell.appendChild(ov);
 
   function toggleOverview(open) {
@@ -181,58 +221,72 @@
   document.body.appendChild(live);
 
   /* --------------------------------------------------------------- go --- */
+  const runAll = (list, ...args) => (list || []).forEach(fn => { try { fn(...args); } catch (err) { console.error(err); } });
+
   function go(n, opts) {
     opts = opts || {};
     n = Math.max(1, Math.min(N, Math.round(+n) || 1));
-    const changed = n !== cur;
+    const st = Math.max(0, Math.min(stepsOf(n), Math.round(+opts.step) || 0));
+    const slideChanged = n !== cur, stepChanged = st !== step;
     cur = n;
+    step = st;
 
-    slides.forEach((s, i) => {
-      const on = i === n - 1;
-      s.classList.toggle("is-active", on);
-      s.classList.toggle("is-past", i < n - 1);
-      s.setAttribute("aria-hidden", String(!on));
-      if (on) s.removeAttribute("inert"); else s.setAttribute("inert", "");
-    });
-    slides[n - 1].scrollTop = 0;
+    if (slideChanged || opts.force) {
+      slides.forEach((s, i) => {
+        const on = i === n - 1;
+        s.classList.toggle("is-active", on);
+        s.classList.toggle("is-past", i < n - 1);
+        s.setAttribute("aria-hidden", String(!on));
+        if (on) s.removeAttribute("inert"); else s.setAttribute("inert", "");
+      });
+      slides[n - 1].scrollTop = 0;
+    }
 
     fill.style.width = pct(n - 1) + "%";
     marker.style.left = pct(n - 1) + "%";
+    bar.style.setProperty("--deck-progress", (pct(n - 1) / 100).toFixed(4));
     stops.forEach((b, i) => b.classList.toggle("on", i <= n - 1));
     countEl.textContent = `${n} / ${N}`;
     titleEl.textContent = titleOf(slides[n - 1], n - 1);
-    prevBtn.disabled = n === 1;
-    nextBtn.disabled = n === N;
+    prevBtn.disabled = n === 1 && step === 0;
+    nextBtn.disabled = n === N && step === stepsOf(N);
 
     if (MODE !== "embed" && !opts.silentHash) {
-      try { history.replaceState(null, "", "#" + n); } catch (e) { /* file:// in some browsers */ }
+      try { history.replaceState(null, "", "#" + n + (step ? "." + step : "")); } catch (e) { /* file:// in some browsers */ }
     }
-    if (MODE === "deck" && changed) live.textContent = `${T.slide} ${n} ${T.of} ${N}: ${titleOf(slides[n - 1], n - 1)}`;
+    if (MODE === "deck" && slideChanged) live.textContent = `${T.slide} ${n} ${T.of} ${N}: ${titleOf(slides[n - 1], n - 1)}`;
 
-    if (changed || opts.force) {
-      if (MODE !== "presenter") {
-        (hooks[n] || []).forEach(fn => { try { fn(slides[n - 1]); } catch (err) { console.error(err); } });
-        const ev = new CustomEvent("deck:enter", { detail: { index: n, slide: slides[n - 1] } });
-        slides[n - 1].dispatchEvent(ev);
+    if (MODE !== "presenter") {
+      if (slideChanged || opts.force) {
+        runAll(hooks[n], slides[n - 1], step);
+        slides[n - 1].dispatchEvent(new CustomEvent("deck:enter", { detail: { index: n, slide: slides[n - 1] } }));
         document.dispatchEvent(new CustomEvent("deck:enter", { detail: { index: n, slide: slides[n - 1] } }));
       }
+      if (slideChanged || stepChanged || opts.force) runAll(stepHooks[n], step);
+    }
+    if (slideChanged || stepChanged || opts.force) {
       if (MODE === "presenter") updatePresenter();
-      if (!opts.remote) broadcast(n);
+      if (!opts.remote) broadcast(n, step);
     }
   }
-  const next = () => go(cur + 1);
-  const prev = () => go(cur - 1);
+  // inside a slide with steps, → and ← walk the steps before leaving it
+  const next = () => (step < stepsOf(cur) ? go(cur, { step: step + 1 }) : cur < N && go(cur + 1));
+  const prev = () => (step > 0 ? go(cur, { step: step - 1 }) : cur > 1 && go(cur - 1, { step: stepsOf(cur - 1) }));
 
   function fromHash() {
     const h = decodeURIComponent(location.hash.slice(1));
-    if (!h) return 1;
-    if (/^\d+$/.test(h)) return +h;
-    const m = /^[sp](\d+)$/.exec(h);              // older links: #s3 (Kapıkule), #p3 (lectures)
-    if (m) return +m[1];
+    if (!h) return { n: 1, step: 0 };
+    let m = /^(\d+)(?:\.(\d+))?$/.exec(h);         // #7, or #7.2 for the third step of slide 7
+    if (m) return { n: +m[1], step: +(m[2] || 0) };
+    m = /^[sp](\d+)$/.exec(h);                      // older links: #s3 (Kapıkule, YAEM), #p3 (lectures)
+    if (m) return { n: +m[1], step: 0 };
     const byId = slides.findIndex(s => s.id === h);
-    return byId >= 0 ? byId + 1 : 1;
+    return { n: byId >= 0 ? byId + 1 : 1, step: 0 };
   }
-  addEventListener("hashchange", () => { const n = fromHash(); if (n !== cur) go(n); });
+  addEventListener("hashchange", () => {
+    const h = fromHash();
+    if (h.n !== cur || h.step !== step) go(h.n, { step: h.step });
+  });
 
   /* ------------------------------------------------------- controls --- */
   prevBtn.addEventListener("click", prev);
@@ -247,6 +301,7 @@
       else if (a === "presenter") openPresenter();
       else if (a === "fullscreen") fullscreen();
       else if (a === "theme") toggleTheme();
+      else if (a === "print") { toggleOverview(false); printDeck(); }
       return;
     }
     const g = e.target.closest("[data-go]");
@@ -260,6 +315,8 @@
   let digits = "", digitTimer;
   document.addEventListener("keydown", e => {
     if (MODE === "embed" || e.defaultPrevented) return;
+    // ⌘P / Ctrl+P prints the finished deck, not whatever the slides happen to show
+    if (MODE === "deck" && (e.metaKey || e.ctrlKey) && (e.key === "p" || e.key === "P")) { e.preventDefault(); printDeck(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const t = e.target;
     if (t.closest && t.closest("input, textarea, select, [contenteditable='true']")) return;
@@ -346,6 +403,35 @@
     if (themeBeforePrint === undefined) delete root.dataset.theme; else root.dataset.theme = themeBeforePrint;
   });
 
+  /* ------------------------------------------------- print to PDF --- */
+  // Printing captures each slide as it looks right now, and some slides only
+  // draw their charts or reveal their steps when visited. So walk every slide
+  // to its last step behind the black screen, let the animations finish, and
+  // only then open the print dialog. Afterwards the deck returns to where it was.
+  let printing = false;
+  async function printDeck() {
+    if (printing || MODE !== "deck") return;
+    printing = true;
+    const back = { n: cur, step };
+    toggleBlack(true);
+    toast(T.preparing);
+    const frame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 90))));
+    for (let n = 1; n <= N; n++) {
+      go(n, { step: stepsOf(n), silentHash: true, remote: true });
+      await frame();
+    }
+    await new Promise(r => setTimeout(r, 1300));   // count-ups and growing bars take about a second
+    toastEl.hidden = true;
+    toggleBlack(false);
+    const restore = () => {
+      removeEventListener("afterprint", restore);
+      go(back.n, { step: back.step, remote: true });
+      printing = false;
+    };
+    addEventListener("afterprint", restore);
+    window.print();
+  }
+
   /* --------------------------------------------------- brand and QR --- */
   const author = deckEl.dataset.author || "Özay Özaydın";
   document.querySelectorAll(".deck-brand").forEach(b => {
@@ -381,25 +467,25 @@
 
   /* ------------------------------------------------ presenter sync --- */
   // The audience window and the presenter window keep each other on the same
-  // slide. Messages carry nothing but a slide number, and each side accepts
-  // them only from the one window it is paired with.
+  // slide and step. Messages carry nothing but those two numbers, and each side
+  // accepts them only from the one window it is paired with.
   let presWin = null;
-  function broadcast(n) {
+  function broadcast(n, st) {
     try {
-      if (MODE === "deck" && presWin && !presWin.closed) presWin.postMessage({ deck: "go", n }, "*");
-      if (MODE === "presenter" && window.opener && !window.opener.closed) window.opener.postMessage({ deck: "go", n }, "*");
+      if (MODE === "deck" && presWin && !presWin.closed) presWin.postMessage({ deck: "go", n, step: st }, "*");
+      if (MODE === "presenter" && window.opener && !window.opener.closed) window.opener.postMessage({ deck: "go", n, step: st }, "*");
     } catch (e) { /* the other window went away */ }
   }
   addEventListener("message", e => {
     const d = e.data;
     if (!d || d.deck !== "go") return;
-    if ((MODE === "deck" && e.source === presWin) || (MODE === "presenter" && e.source === window.opener)) go(d.n, { remote: true });
+    if ((MODE === "deck" && e.source === presWin) || (MODE === "presenter" && e.source === window.opener)) go(d.n, { step: d.step, remote: true });
   });
 
   function openPresenter() {
     if (MODE !== "deck") return;
     if (presWin && !presWin.closed) { presWin.focus(); return; }
-    presWin = window.open(`${PAGE_URL}?presenter#${cur}`, "deck-presenter", "width=1280,height=800");
+    presWin = window.open(`${PAGE_URL}?presenter#${cur}${step ? "." + step : ""}`, "deck-presenter", "width=1280,height=800");
     if (!presWin) toast(T.popup);
   }
 
@@ -477,13 +563,16 @@
   function updatePresenter() {
     if (!P) return;
     const [curF, nextF] = P.frames;
-    curF.querySelector("iframe").src = `${PAGE_URL}?embed#${cur}`;
-    const hasNext = cur < N;
-    nextF.classList.toggle("p-done", !hasNext);
-    if (hasNext) nextF.querySelector("iframe").src = `${PAGE_URL}?embed#${cur + 1}`;
-    P.count.textContent = `${cur} / ${N}`;
-    const notes = slides[cur - 1].querySelector(".notes");
-    P.notes.innerHTML = notes && notes.innerHTML.trim() ? notes.innerHTML : `<p class="p-empty">${T.noNotes}</p>`;
+    const at = (n, st) => `${PAGE_URL}?embed#${n}${st ? "." + st : ""}`;
+    curF.querySelector("iframe").src = at(cur, step);
+    // "next" is whatever → will show: the next step of this slide, or the next slide
+    const last = stepsOf(cur);
+    const nextSrc = step < last ? at(cur, step + 1) : cur < N ? at(cur + 1, 0) : null;
+    nextF.classList.toggle("p-done", !nextSrc);
+    if (nextSrc) nextF.querySelector("iframe").src = nextSrc;
+    P.count.textContent = `${cur} / ${N}` + (last ? `  ·  ${step + 1}/${last + 1}` : "");
+    const notes = notesOf(slides[cur - 1]);
+    P.notes.innerHTML = notes || `<p class="p-empty">${T.noNotes}</p>`;
   }
 
   /* ------------------------------------------------------------ start --- */
@@ -491,7 +580,8 @@
   // this one, has registered its Deck.onEnter hooks before the first slide.
   function start() {
     if (MODE === "presenter") buildPresenter();
-    go(fromHash(), { force: true, remote: true, silentHash: MODE === "embed" });
+    const h = fromHash();
+    go(h.n, { step: h.step, force: true, remote: true, silentHash: MODE === "embed" });
     deckEl.scrollTop = 0;
     deckEl.scrollLeft = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => shell.classList.add("is-ready")));
@@ -502,9 +592,12 @@
     next,
     prev,
     get current() { return cur; },
+    get step() { return step; },
+    setStep: k => go(cur, { step: k }),
     count: N,
     mode: MODE,
-    onEnter(n, fn) { (hooks[n] = hooks[n] || []).push(fn); }
+    onEnter(n, fn) { (hooks[n] = hooks[n] || []).push(fn); },
+    onStep(n, fn) { (stepHooks[n] = stepHooks[n] || []).push(fn); }
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);

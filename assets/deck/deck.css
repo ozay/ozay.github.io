@@ -54,7 +54,7 @@
 }
 
 /* ------------------------------------------------------------ slides --- */
-.deck-stage > .slide {
+:is(.deck-stage, .deck-canvas) > .slide {
   position: absolute;
   inset: 0;
   overflow-x: hidden;
@@ -64,20 +64,30 @@
   transform: translateX(var(--deck-shift));
   transition: opacity var(--deck-speed) ease, transform var(--deck-speed) ease, visibility 0s var(--deck-speed);
 }
-.deck-stage > .slide.is-past { transform: translateX(calc(-1 * var(--deck-shift))); }
-.deck-stage > .slide.is-active {
+:is(.deck-stage, .deck-canvas) > .slide.is-past { transform: translateX(calc(-1 * var(--deck-shift))); }
+:is(.deck-stage, .deck-canvas) > .slide.is-active {
   opacity: 1;
   visibility: visible;
   transform: none;
   transition: opacity var(--deck-speed) ease, transform var(--deck-speed) ease;
 }
 /* no animation on first paint, only once the deck is running */
-.deck-root:not(.is-ready) .deck-stage > .slide { transition: none; }
+.deck-root:not(.is-ready) :is(.deck-stage, .deck-canvas) > .slide { transition: none; }
 
-:where(.deck-stage > .slide) {
+:where(:is(.deck-stage, .deck-canvas) > .slide) {
   box-sizing: border-box;
   padding: clamp(20px, 3.2vw, 52px) clamp(18px, 4.5vw, 72px) 32px;
 }
+
+/* A deck designed on a fixed canvas (data-size="1600x900") is laid out at
+   that size and scaled to fit, so pixel-exact layouts survive any screen. */
+.deck-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+}
+.deck-canvas > .slide { overflow: hidden; }
 
 /* speaker notes never show on the slide itself */
 .deck-stage .notes { display: none !important; }
@@ -297,7 +307,7 @@
   left: 50%;
   bottom: calc(var(--deck-bar-h) + 16px);
   transform: translateX(-50%);
-  z-index: 90;
+  z-index: 110;   /* above the black screen, which hides the slides while a PDF is prepared */
   background: #15161a;
   color: #fff;
   font: 500 14px/1.4 var(--deck-font);
@@ -432,7 +442,7 @@ body.deck-presenter-body .deck-root { display: none; }
 
 /* ------------------------------------------------------ reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
-  .deck-stage > .slide, .deck-stage > .slide.is-active,
+  :is(.deck-stage, .deck-canvas) > .slide, :is(.deck-stage, .deck-canvas) > .slide.is-active,
   .deck-track-fill, .deck-marker { transition: none !important; }
 }
 
@@ -445,7 +455,8 @@ body.deck-presenter-body .deck-root { display: none; }
   .deck-bar, .deck-overview, .deck-blackout, .deck-toast, .deck-live, .deck-presenter { display: none !important; }
   .deck-root { position: static !important; display: block !important; }
   .deck-stage { overflow: visible !important; height: auto !important; }
-  .deck-stage > .slide {
+  .deck-canvas { position: static !important; transform: none !important; width: auto !important; height: auto !important; }
+  :is(.deck-stage, .deck-canvas) > .slide {
     position: relative !important;
     inset: auto !important;
     width: 13.333in;
@@ -457,7 +468,7 @@ body.deck-presenter-body .deck-root { display: none; }
     break-after: page;
     page-break-after: always;
   }
-  .deck-stage > .slide:last-child { break-after: auto; page-break-after: auto; }
+  :is(.deck-stage, .deck-canvas) > .slide:last-child { break-after: auto; page-break-after: auto; }
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;

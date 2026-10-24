@@ -86,11 +86,16 @@ The template's comments explain the rest. Useful pieces inside a slide:
 | `<div class="deck-qr"></div>` | A QR code to the deck's own address. |
 | `<div class="deck-brand"></div>` | Your logo and name. |
 | `<button data-go="7">` | Jumps to slide 7. |
+| `data-steps="3"` on a slide | Four states (0–3) inside the slide. `→` walks through them before moving on; the slide's script follows along with `Deck.onStep(n, k => …)`. |
+| `data-notes="…"` on a slide | Speaker notes as plain text, instead of an `aside`. |
 | `\( … \)` and `\[ … \]` | Maths, if the deck loads MathJax (the template does). |
 
 And on the `<main data-deck>` element: `data-back` / `data-back-label` for the
 link at the left of the bar, `data-label` for a context line such as
 "ENMU2050 · Week 1", and `data-themes="light dark"` to offer a dark mode.
+A deck designed at a fixed size, with every measurement in pixels, adds
+`data-size="1600x900"`: its slides are laid out at that size and scaled to the
+screen. The YAEM 2026 deck works this way; the other two reflow instead.
 
 A deck's own script goes after `deck.js` and can react to slides with
 `Deck.onEnter(5, () => { … })`. The Kapıkule deck uses this to animate its charts.
@@ -105,6 +110,7 @@ A deck's own script goes after `deck.js` and can react to slides with
 | `P` | presenter view: current and next slide, your notes, a timer and a clock |
 | `B` | black screen, for discussion; press again to return |
 | digits, then `Enter` | jump to that slide, e.g. `1` `2` `Enter` |
+| `⌘P` / `Ctrl+P` | print, or save as PDF (see below) |
 
 **Presenter view.** Press `P` and allow the pop-up. Put the presenter window on
 your laptop screen and the deck on the projector. Moving in either window moves
@@ -117,9 +123,14 @@ before the day:** some browsers refuse web fonts on pages opened from disk, in
 which case the slides fall back to a system font. Maths and everything else keep
 working.
 
-**A PDF for organisers.** Print the deck and choose "Save as PDF". Each slide
-becomes one 16:9 page, in the light theme, without the controls or your notes.
-Interactive figures print as they currently look.
+**A PDF for organisers.** Press `⌘P` (or `Ctrl+P`), or use the PDF button in
+the overview, and choose "Save as PDF". Before the print dialog opens, the deck
+takes every slide to its finished state behind a black screen: charts drawn,
+counters complete, every step revealed. That is why the dialog takes a
+couple of seconds to appear. Each slide becomes one page at the deck's own
+proportions, in the light theme, without the controls or your notes, and the
+deck returns to the slide you were on. The browser's own File → Print skips the
+preparation and prints the slides as they currently look.
 
 
 
@@ -152,13 +163,14 @@ assets/
   img/logo.svg  favicon.svg
   deck/             the shared slide engine (see "Presentations")
     deck.css  deck.js
-    fonts/          Archivo and Overpass, served locally
+    fonts/          Archivo, Overpass and STIX Two Text, served locally
     vendor/         MathJax 3.2.2 and qrcode-generator 1.4.4
 content/posts/      the Markdown posts
 talks/<slug>/       one folder per talk; talks/_template/ is the starter
 courses/<code>/<week>/   lecture decks, e.g. courses/enmu2050/week-01/
 
 kapikule.html  multivariate-week1-trial.html
+content/yaem2026-chemdecision.html  content/multivariate-week1-trial.html
                     old addresses that now forward to the new ones
 
 .nojekyll           stops GitHub Pages running Jekyll over the folder
