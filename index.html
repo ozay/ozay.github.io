@@ -42,6 +42,7 @@
       <li><a href="about.html" data-i18n="navAbout">About</a></li>
       <li><a href="research.html" data-i18n="navResearch">Research</a></li>
       <li><a href="teaching.html" data-i18n="navTeaching">Teaching</a></li>
+      <li><a href="talks.html" data-i18n="navTalks">Talks</a></li>
       <li><a href="writing.html" data-i18n="navWriting">Writing</a></li>
       <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
     </ul>
@@ -171,6 +172,23 @@
         <span class="stat-label" data-i18n="statTheses">Master's theses supervised</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================================================ upcoming talks ==== -->
+<!-- shown by talks.js only while some talk in talks.js is dated in the future -->
+<section data-talks-section hidden style="padding-bottom:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow"><span data-lang="en">Upcoming</span><span data-lang="tr">Yaklaşan</span></p>
+      <h2 data-lang="en">Where I am speaking next</h2>
+      <h2 data-lang="tr">Sıradaki konuşmalar</h2>
+    </div>
+    <div class="talk-list" id="talks-upcoming" data-compact="true"></div>
+    <a class="btn btn-ghost" href="talks.html" style="margin-top:1.2rem">
+      <span data-lang="en">All talks</span><span data-lang="tr">Tüm konuşmalar</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </section>
 
@@ -308,6 +326,7 @@
           <li><a href="about.html" data-i18n="navAbout">About</a></li>
           <li><a href="research.html" data-i18n="navResearch">Research</a></li>
           <li><a href="teaching.html" data-i18n="navTeaching">Teaching</a></li>
+          <li><a href="talks.html" data-i18n="navTalks">Talks</a></li>
           <li><a href="writing.html" data-i18n="navWriting">Writing</a></li>
           <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
         </ul>
@@ -347,6 +366,8 @@
 <script src="assets/data/publications.js"></script>
 <script src="assets/data/posts.js"></script>
 <script src="assets/js/home.js"></script>
+<script src="assets/data/talks.js"></script>
+<script src="assets/js/talks.js"></script>
 
 </body>
 </html>

@@ -215,12 +215,16 @@
 
   /* --------------------------------------------------------------- boot -- */
   document.addEventListener("DOMContentLoaded", () => {
-    const fromUrl = new URLSearchParams(location.search).get("topic");
+    const params = new URLSearchParams(location.search);
+    const fromUrl = params.get("topic");
     if (fromUrl && topicKeys.includes(fromUrl)) state.topic = fromUrl;
+    if (params.get("q")) state.q = params.get("q");    // e.g. from a talk's "Paper" button
     buildFilters();
+    document.getElementById("pub-search").value = state.q;
     drawFigures();
     apply();
     theses();
+    if (state.q) document.getElementById("pub-search").closest(".filters").scrollIntoView({ block: "start" });
   });
 
   document.addEventListener("langchange", () => { drawFigures(); apply(); theses(); });

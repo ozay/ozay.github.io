@@ -6,7 +6,7 @@ window.I18N = {
   en: {
     /* nav + chrome */
     navHome: "Home", navAbout: "About", navResearch: "Research", navTeaching: "Teaching",
-    navWriting: "Writing", navContact: "Contact",
+    navWriting: "Writing", navContact: "Contact", navTalks: "Talks",
     menu: "Menu", themeToggle: "Toggle colour theme", skipLink: "Skip to content",
     roleLine: "Assistant Professor, Industrial Engineering",
 
@@ -68,6 +68,10 @@ window.I18N = {
     thTerm: "Academic year", thUg: "Undergraduate", thGrad: "Graduate", thUni: "University", thDeliveries: "Deliveries",
 
     /* writing */
+    talkSlides: "Slides", talkPaper: "Paper", talkVideo: "Video",
+    talkInEn: "In English", talkInTr: "In Turkish", talkOriginal: "Original title",
+    talkWeek: "Week", lectureSlides: "Lecture slides",
+
     writingTitle: "Writing",
     readMore: "Read",
     minRead: "min read",
@@ -93,7 +97,7 @@ window.I18N = {
 
   tr: {
     navHome: "Ana Sayfa", navAbout: "Hakkımda", navResearch: "Araştırma", navTeaching: "Dersler",
-    navWriting: "Yazılar", navContact: "İletişim",
+    navWriting: "Yazılar", navContact: "İletişim", navTalks: "Konuşmalar",
     menu: "Menü", themeToggle: "Renk temasını değiştir", skipLink: "İçeriğe geç",
     roleLine: "Dr. Öğretim Üyesi, Endüstri Mühendisliği",
 
@@ -149,6 +153,10 @@ window.I18N = {
     figUnis: "Ders verdiğim kurumlar",
     figUnisSub: "Tüm kayıt boyunca kurumlara göre verilen ders sayısı.",
     thTerm: "Akademik yıl", thUg: "Lisans", thGrad: "Lisansüstü", thUni: "Üniversite", thDeliveries: "Ders sayısı",
+
+    talkSlides: "Sunum", talkPaper: "Makale", talkVideo: "Video",
+    talkInEn: "İngilizce", talkInTr: "Türkçe", talkOriginal: "Özgün başlık",
+    talkWeek: "Hafta", lectureSlides: "Ders sunumu",
 
     writingTitle: "Yazılar",
     readMore: "Oku",

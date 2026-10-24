@@ -224,3 +224,39 @@
 .tool-group h4 { font-size: .95rem; margin-bottom: .5rem; }
 .tool-list { display: flex; flex-wrap: wrap; gap: .4rem; }
 .notice { background: var(--accent-2-soft); border: 1px solid color-mix(in srgb, var(--accent-2) 30%, transparent); color: var(--ink-2); padding: .9rem 1.1rem; border-radius: var(--r); font-size: .88rem; }
+
+/* ---------------------------------------------------------------- talks -- */
+.talk-list { display: flex; flex-direction: column; gap: .9rem; }
+.talk {
+  display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: 1.4rem;
+  padding: 1.3rem 1.4rem;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r);
+  transition: border-color .22s, transform .22s var(--ease), box-shadow .22s;
+}
+.talk:hover { border-color: var(--line-2); transform: translateY(-2px); box-shadow: var(--shadow); }
+.talk-date { font-family: var(--font-mono); font-size: .82rem; line-height: 1.5; color: var(--ink-3); padding-top: .2rem; }
+.talk-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
+.talk h3 { font-size: 1.22rem; margin-bottom: .3rem; }
+.talk-sub { color: var(--ink-2); font-size: .95rem; margin-bottom: .35rem; }
+.talk-orig { color: var(--ink-3); font-size: .84rem; font-style: italic; margin-bottom: .45rem; }
+.talk-orig span { font-style: normal; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .04em; }
+.talk-event { font-size: .9rem; color: var(--ink-2); }
+.talk-with { font-size: .86rem; color: var(--ink-3); margin-top: .15rem; }
+.talk-links { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .9rem; }
+.talk-compact { grid-template-columns: 9.5rem minmax(0, 1fr); padding: 1rem 1.15rem; }
+.talk-compact h3 { font-size: 1.05rem; }
+@media (max-width: 640px) {
+  .talk, .talk-compact { grid-template-columns: 1fr; gap: .5rem; }
+}
+
+.lecture-course h3 { margin: .35rem 0 .15rem; font-size: 1.3rem; }
+.lecture-term { font-size: .86rem; margin-bottom: .9rem; }
+.lecture-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.lecture-list li { border-bottom: 1px solid var(--line); }
+.lecture-list a {
+  display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: 1rem; align-items: center;
+  padding: .8rem .2rem; text-decoration: none; transition: background .2s, padding .2s;
+}
+.lecture-list a:hover { background: var(--bg-3); padding-left: .6rem; }
+.lecture-week { font-family: var(--font-mono); font-size: .78rem; color: var(--accent-ink); }
+.lecture-title { font-weight: 550; }

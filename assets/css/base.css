@@ -231,7 +231,12 @@ section { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
 
 .nav-toggle { display: none; }
 
-@media (max-width: 860px) {
+/* Seven links plus the language and theme switches stop fitting below this
+   width, and the Turkish labels need the room first. */
+@media (max-width: 1180px) {
+  .brand-name small { display: none; }
+}
+@media (max-width: 1000px) {
   .nav-toggle { display: grid; }
   .nav-links {
     position: fixed; inset: var(--nav-h) 0 auto 0;

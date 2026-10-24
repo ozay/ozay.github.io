@@ -80,6 +80,16 @@
       `<i class="${ran.has(y) ? "on" : ""}"></i>`).join("")}</div>`;
   }
 
+  // one deck links straight to it; several link to the course's list on the Talks page
+  function slidesLink(c) {
+    const decks = (window.SITE_LECTURES || []).filter(l => l.course === c.title);
+    if (!decks.length) return "";
+    const href = decks.length === 1 ? decks[0].slides : "talks.html#" + decks[0].code.toLowerCase();
+    return `<a class="btn btn-ghost btn-sm" href="${Site.esc(href)}" style="align-self:flex-start;margin-top:.3rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20h8M12 17v3"/></svg>
+      ${Site.t("lectureSlides")}</a>`;
+  }
+
   function card(c) {
     const n = themeKeys.indexOf(c.theme) + 1;
     const isActive = c.terms.includes(ACTIVE);
@@ -104,6 +114,7 @@
           <span class="chip">${c.level === "ug" ? Site.t("levelUg") : Site.t("levelGrad")}</span>
           <span class="chip">${c.lang === "en" ? Site.t("langEn") : Site.t("langTr")}</span>
         </div>
+        ${slidesLink(c)}
       </article>`;
   }
 

@@ -18,8 +18,8 @@ double-clicking the HTML files.
 
 ## Updating the content
 
-All the content lives in four files. You should never need to touch the HTML to
-add a paper, a course or a post.
+All the content lives in five files. You should never need to touch the HTML to
+add a paper, a course, a talk or a post.
 
 | What | File |
 |---|---|
@@ -27,10 +27,21 @@ add a paper, a course or a post.
 | Courses, themes, universities, active term | `assets/data/courses.js` |
 | Bio, links, supervised theses, career timeline | `assets/data/profile.js` |
 | Blog index | `assets/data/posts.js` |
+| Talks and lecture decks | `assets/data/talks.js` |
 
 Each file starts with a comment explaining its fields. The pages derive their
 figures and headline numbers from these files, so the charts, counts and filters
 update themselves.
+
+### A new talk
+
+Put the deck in `talks/<year>-<event>-<topic>/` (see "Presentations" below),
+then add an entry at the top of `SITE_TALKS` in `assets/data/talks.js`. A talk
+dated in the future shows as **Upcoming** on the Talks page and on the home page
+until its last day has passed; nothing needs taking down afterwards. Set
+`paper` to a publication's exact title and the card links to it on the Research
+page. Lecture decks go in `SITE_LECTURES` instead, and their course's card on
+the Teaching page gains a "Lecture slides" button.
 
 ### Each semester
 
@@ -149,7 +160,7 @@ The theme works the same way, defaulting to the visitor's system preference.
 ## Layout
 
 ```
-index.html  about.html  research.html  teaching.html
+index.html  about.html  research.html  teaching.html  talks.html
 writing.html  post.html  contact.html  404.html
 assets/
   css/base.css      design tokens, layout, shared components
@@ -157,9 +168,9 @@ assets/
   js/site.js        theme, language, nav, reveals, counters
   js/i18n.js        UI string dictionary
   js/charts.js      SVG chart builders (no dependencies)
-  js/home.js  about.js  research.js  teaching.js  blog.js  post.js
+  js/home.js  about.js  research.js  teaching.js  talks.js  blog.js  post.js
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
-  data/             the four content files
+  data/             the five content files
   img/logo.svg  favicon.svg
   deck/             the shared slide engine (see "Presentations")
     deck.css  deck.js
@@ -182,7 +193,7 @@ free to hold anything else you like — drafts, source images, the old Google Si
 export — none of which is tracked or published.
 
 The navigation and footer are repeated in each HTML file, since there is no build
-step. If you change a nav link, change it in all eight pages.
+step. If you change a nav link, change it in all nine pages.
 
 ## Publishing (GitHub Pages)
 
