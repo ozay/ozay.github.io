@@ -2,7 +2,14 @@
 (function () {
   "use strict";
 
-  const POSTS = window.SITE_POSTS || [];
+  /* A post dated in the future is queued, not published: it stays off the index
+     until its date arrives. Direct links to it still work. */
+  const today = (function () {
+    const d = new Date(), p = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  })();
+
+  const POSTS = (window.SITE_POSTS || []).filter(p => !p.date || p.date <= today);
   let activeTag = "all";
 
   function fmtDate(iso) {
