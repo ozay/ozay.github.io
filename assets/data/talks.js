@@ -34,6 +34,7 @@ window.SITE_TALKS = [
     subtitleTr: "Kapıkule sınır kapısı üzerine simülasyon tabanlı bir vaka çalışması",
     event: "BSEC-URTA Digitalisation Working Group",
     city: "",
+    with: ["Füsun Ülengin", "Bora Çekyay", "Mine Işık", "Özgür Kabak", "Peral Toktaş-Palut", "Şule Önsel Ekici", "Y. İlker Topçu"],
     slides: "talks/2026-bsec-kapikule/",
     paper: "A simulation-based approach for improving the largest border crossing between Europe and Turkey"
   },

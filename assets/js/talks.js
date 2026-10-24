@@ -38,8 +38,10 @@
     const title = field(t, "title"), sub = field(t, "subtitle");
     const translated = t.lang !== L();
     const event = field(t, "event");
-    const withWho = (t.with || []).length
-      ? (L() === "tr" ? `${t.with.join(", ")} ile` : `with ${t.with.join(", ")}`) : "";
+    const names = (t.with || []).length
+      ? (Intl.ListFormat ? new Intl.ListFormat(L() === "tr" ? "tr" : "en-GB", { type: "conjunction" }).format(t.with) : t.with.join(", "))
+      : "";
+    const withWho = names ? (L() === "tr" ? `${names} ile` : `with ${names}`) : "";
 
     const links = [
       t.slides && btn(t.slides, Site.t("talkSlides"), "btn-primary", ICON_SLIDES),
