@@ -18,7 +18,7 @@ double-clicking the HTML files.
 
 ## Updating the content
 
-All the content lives in five files. You should never need to touch the HTML to
+All the content lives in six files. You should never need to touch the HTML to
 add a paper, a course, a talk or a post.
 
 | What | File |
@@ -28,6 +28,7 @@ add a paper, a course, a talk or a post.
 | Bio, links, supervised theses, career timeline | `assets/data/profile.js` |
 | Blog index | `assets/data/posts.js` |
 | Talks and lecture decks | `assets/data/talks.js` |
+| Funding sources and partner institutes | `assets/data/funding.js` |
 
 Each file starts with a comment explaining its fields. The pages derive their
 figures and headline numbers from these files, so the charts, counts and filters
@@ -58,6 +59,20 @@ term counts and the four headline numbers all follow from `terms`.
 Add an entry at the **top** of `SITE_PUBLICATIONS`. Set `topic` to one of the keys
 in `SITE_TOPICS` at the top of the same file. Fill in `doi` when you have one — the
 card then shows a DOI button instead of a Google Scholar search link.
+
+### A new funding source
+
+`funding.html` is **unlisted**: it is deliberately absent from the navigation,
+the footer and `sitemap.xml`, and carries `<meta name="robots" content="noindex,
+nofollow">`. Reach it at <https://ozay.in/funding.html>. To publish it properly
+later, add the nav and footer entries back (the `navFunding` i18n key is already
+there, in both languages), drop the `robots` meta, and add it to the sitemap.
+
+Add an entry to `SITE_FUNDING` in `assets/data/funding.js`. Set `group` to one of
+the keys in `SITE_FUNDING_GROUPS` and `kind` to one of `SITE_FUNDING_KINDS`
+(`funder`, `portal` or `institute` — not everything listed hands out money).
+Set `often: true` and it is also pinned to the band at the top of the page.
+The search box covers the name, the `tags` string and both description lines.
 
 ### A new blog post
 
@@ -162,6 +177,7 @@ The theme works the same way, defaulting to the visitor's system preference.
 ```
 index.html  about.html  research.html  teaching.html  talks.html
 writing.html  post.html  contact.html  404.html
+funding.html              unlisted; see "Funding" below
 assets/
   css/base.css      design tokens, layout, shared components
   css/pages.css     hero, timeline, charts, cards, blog
@@ -169,6 +185,7 @@ assets/
   js/i18n.js        UI string dictionary
   js/charts.js      SVG chart builders (no dependencies)
   js/home.js  about.js  research.js  teaching.js  talks.js  blog.js  post.js
+  js/funding.js    the Funding page
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
   data/             the five content files
   img/logo.svg  favicon.svg
@@ -193,7 +210,7 @@ free to hold anything else you like — drafts, source images, the old Google Si
 export — none of which is tracked or published.
 
 The navigation and footer are repeated in each HTML file, since there is no build
-step. If you change a nav link, change it in all nine pages.
+step. If you change a nav link, change it in all ten pages.
 
 ## Publishing (GitHub Pages)
 

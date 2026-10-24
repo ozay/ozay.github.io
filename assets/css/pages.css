@@ -273,3 +273,24 @@
 .lecture-list a:hover { background: var(--bg-3); padding-left: .6rem; }
 .lecture-week { font-family: var(--font-mono); font-size: .78rem; color: var(--accent-ink); }
 .lecture-title { font-weight: 550; }
+
+/* ------------------------------------------------------------- funding -- */
+.fund-grid { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.fund-often { margin-bottom: .4rem; }
+.fund-card { display: flex; flex-direction: column; gap: .4rem; }
+.fund-card:hover .fund-host { color: var(--accent-ink); }
+.fund-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; }
+.fund-head h3 { font-size: 1.14rem; line-height: 1.25; }
+.fund-head .chip { flex: none; }
+.fund-kind { align-self: flex-start; }
+.fund-what { font-size: .92rem; color: var(--ink-2); line-height: 1.5; }
+.fund-note { font-size: .85rem; color: var(--ink-3); line-height: 1.5; font-style: italic; }
+.fund-host {
+  display: flex; align-items: center; gap: .3rem; margin-top: auto; padding-top: .5rem;
+  font-size: .76rem; color: var(--ink-3); transition: color .2s;
+}
+.fund-host svg { width: 13px; height: 13px; flex: none; }
+.fund-group + .fund-group { margin-top: clamp(1.6rem, 1rem + 2vw, 2.4rem); }
+.fund-group .section-head { margin-bottom: .9rem; }
+.fund-group .section-head h2 { font-size: clamp(1.3rem, 1.1rem + .7vw, 1.6rem); }
+.fund-compact .fund-what { font-size: .88rem; }

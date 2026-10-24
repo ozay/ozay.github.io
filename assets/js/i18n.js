@@ -6,7 +6,7 @@ window.I18N = {
   en: {
     /* nav + chrome */
     navHome: "Home", navAbout: "About", navResearch: "Research", navTeaching: "Teaching",
-    navWriting: "Writing", navContact: "Contact", navTalks: "Talks",
+    navWriting: "Writing", navContact: "Contact", navTalks: "Talks", navFunding: "Funding",
     menu: "Menu", themeToggle: "Toggle colour theme", skipLink: "Skip to content",
     roleLine: "Assistant Professor, Industrial Engineering",
 
@@ -89,6 +89,12 @@ window.I18N = {
     contactPost: "In person, or by post", contactPostSub: "For the nostalgia of a face-to-face meeting or a letter.",
     copy: "Copy",
 
+    /* funding page */
+    searchFunding: "Search funders, programmes, countries…",
+    allKinds: "All kinds",
+    fundOften: "Checked often",
+    fundOftenSub: "The three I open most weeks.",
+
     /* footer */
     footExplore: "Explore", footProfiles: "Profiles", footElsewhere: "Elsewhere",
     builtWith: "Built as a static site. No trackers, no cookies.",
@@ -97,7 +103,7 @@ window.I18N = {
 
   tr: {
     navHome: "Ana Sayfa", navAbout: "Hakkımda", navResearch: "Araştırma", navTeaching: "Dersler",
-    navWriting: "Yazılar", navContact: "İletişim", navTalks: "Konuşmalar",
+    navWriting: "Yazılar", navContact: "İletişim", navTalks: "Konuşmalar", navFunding: "Fonlar",
     menu: "Menü", themeToggle: "Renk temasını değiştir", skipLink: "İçeriğe geç",
     roleLine: "Dr. Öğretim Üyesi, Endüstri Mühendisliği",
 
@@ -173,6 +179,12 @@ window.I18N = {
     contactPhone: "Telefon", contactPhoneSub: "Sesli söylemenin daha hızlı olduğu durumlar için.",
     contactPost: "Yüz yüze ya da posta ile", contactPostSub: "Yüz yüze görüşmenin ya da mektubun nostaljisi için.",
     copy: "Kopyala",
+
+    /* funding page */
+    searchFunding: "Kurum, program, ülke ara…",
+    allKinds: "Tüm türler",
+    fundOften: "Sık bakılanlar",
+    fundOftenSub: "Çoğu hafta açtığım üç adres.",
 
     footExplore: "Keşfet", footProfiles: "Profiller", footElsewhere: "Diğer",
     builtWith: "Statik site olarak kuruldu. İzleyici yok, çerez yok.",
