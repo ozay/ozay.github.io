@@ -153,8 +153,9 @@
                       L${x0 + bw - r},${y0} Q${x0 + bw},${y0} ${x0 + bw},${y0 + r}
                       L${x0 + bw},${y(0)} Z`;
         const bar = el("path", { class: "bar-mark", d: path, fill: color }, svg);
-        bindMark(bar, figure, () => `<b>${d.label || d.key}</b><br><span class="t-sub">${d.value} ${opts.unit || ""}</span>`);
-        bar.setAttribute("aria-label", `${d.label || d.key}: ${d.value}`);
+        bindMark(bar, figure, () =>
+          `<b>${d.label || d.key}</b><br><span class="t-sub">${d.value} ${opts.unit || ""}${d.sub ? " · " + d.sub : ""}</span>`);
+        bar.setAttribute("aria-label", `${d.label || d.key}: ${d.value}${d.sub ? ", " + d.sub : ""}`);
 
         if (opts.valueLabels) {
           const vl = el("text", { class: "value-label", x: cx, y: y0 - 6, "text-anchor": "middle" }, svg);
@@ -165,6 +166,127 @@
       const xl = el("text", { class: "tick-label", x: cx, y: H - 10, "text-anchor": "middle" }, svg);
       xl.textContent = d.key;
     });
+
+    return svg;
+  }
+
+
+  /* ======================================================= line chart === */
+  /**
+   * One value over time. Points carry a date, so a month of heavy play takes
+   * the width it earned rather than being evened out with a quiet one.
+   * data: [{ t: "YYYY-MM-DD", v: number }]
+   * opts: { height, unit, aria, refs: [{ v, label }], format }
+   */
+  function line(mount, data, opts) {
+    opts = opts || {};
+    const figure = mount.closest(".figure") || mount;
+    mount.innerHTML = "";
+    if (!data.length) return null;
+
+    const W = 720, H = opts.height || 280;
+    const m = { top: 16, right: 10, bottom: 30, left: 38 };
+    const iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+
+    const ms = d => Date.parse(d + "T00:00:00Z");
+    const t0 = ms(data[0].t), t1 = ms(data[data.length - 1].t);
+    const span = Math.max(1, t1 - t0);
+    const x = d => m.left + ((ms(d) - t0) / span) * iw;
+
+    const vals = data.map(d => d.v).concat((opts.refs || []).map(r => r.v));
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    // Round the band outwards to a round number so the gridlines read cleanly.
+    const step = Math.max(10, Math.round((hi - lo) / 4 / 50) * 50 || 50);
+    const bot = Math.floor((lo - step * .35) / step) * step;
+    const topv = Math.ceil((hi + step * .35) / step) * step;
+    const y = v => m.top + ih - ((v - bot) / Math.max(1, topv - bot)) * ih;
+
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opts.aria || "" }, mount);
+
+    for (let v = bot; v <= topv + 1e-9; v += step) {
+      el("line", { class: "grid-line", x1: m.left, x2: W - m.right, y1: y(v), y2: y(v) }, svg);
+      const lab = el("text", { class: "tick-label", x: m.left - 7, y: y(v) + 3.5, "text-anchor": "end" }, svg);
+      lab.textContent = v;
+    }
+
+    // One x tick per month, labelled at the first point of each month.
+    let lastMonth = "";
+    data.forEach(d => {
+      const mo = d.t.slice(0, 7);
+      if (mo === lastMonth) return;
+      lastMonth = mo;
+      const cx = x(d.t);
+      if (cx > W - m.right - 18) return;
+      el("line", { class: "grid-line", x1: cx, x2: cx, y1: m.top, y2: m.top + ih, opacity: .55 }, svg);
+      const lab = el("text", { class: "tick-label", x: cx, y: H - 10, "text-anchor": "middle" }, svg);
+      lab.textContent = (opts.monthLabel || (s => s.slice(5) + "/" + s.slice(2, 4)))(d.t);
+    });
+
+    (opts.refs || []).forEach(r => {
+      el("line", {
+        x1: m.left, x2: W - m.right, y1: y(r.v), y2: y(r.v),
+        stroke: "var(--ink-3)", "stroke-width": 1, "stroke-dasharray": "3 4", opacity: .7
+      }, svg);
+      const lab = el("text", {
+        class: "tick-label", x: W - m.right, y: y(r.v) - 5, "text-anchor": "end"
+      }, svg);
+      lab.textContent = r.label;
+    });
+
+    const d = data.map((p, i) => (i ? "L" : "M") + x(p.t).toFixed(1) + "," + y(p.v).toFixed(1)).join(" ");
+    el("path", {
+      d: d + ` L${x(data[data.length - 1].t).toFixed(1)},${y(bot)} L${x(data[0].t).toFixed(1)},${y(bot)} Z`,
+      fill: SERIES(1), opacity: .08
+    }, svg);
+    el("path", {
+      d, fill: "none", stroke: SERIES(1), "stroke-width": 2,
+      "stroke-linejoin": "round", "stroke-linecap": "round"
+    }, svg);
+
+    /* --- hover: a guide, a dot and the tooltip, driven by the nearest point */
+    const guide = el("line", {
+      y1: m.top, y2: m.top + ih, stroke: "var(--line-2)", "stroke-width": 1, opacity: 0
+    }, svg);
+    const dotRing = el("circle", { r: 5.5, fill: "var(--surface-1)", opacity: 0 }, svg);
+    const dot = el("circle", { r: 3.5, fill: SERIES(1), opacity: 0 }, svg);
+    const fmt = opts.format || (p => `<b>${p.v}</b><br><span class="t-sub">${p.t}</span>`);
+
+    function nearest(clientX) {
+      const r = svg.getBoundingClientRect();
+      const px = m.left + ((clientX - r.left) / r.width) * W - m.left;
+      const want = t0 + (px / iw) * span;
+      let best = data[0], bd = Infinity;
+      for (const p of data) {
+        const dd = Math.abs(ms(p.t) - want);
+        if (dd < bd) { bd = dd; best = p; }
+      }
+      return best;
+    }
+    function place(p, evt) {
+      const cx = x(p.t), cy = y(p.v);
+      guide.setAttribute("x1", cx); guide.setAttribute("x2", cx); guide.setAttribute("opacity", 1);
+      [dotRing, dot].forEach(n => { n.setAttribute("cx", cx); n.setAttribute("cy", cy); n.setAttribute("opacity", 1); });
+      showTip(fmt(p), evt);
+    }
+    function clear() {
+      guide.setAttribute("opacity", 0);
+      dotRing.setAttribute("opacity", 0);
+      dot.setAttribute("opacity", 0);
+      hideTip();
+    }
+    const hit = el("rect", {
+      x: m.left, y: m.top, width: iw, height: ih, fill: "transparent", style: "cursor:crosshair"
+    }, svg);
+    hit.addEventListener("mousemove", e => place(nearest(e.clientX), e));
+    hit.addEventListener("mouseleave", clear);
+    hit.addEventListener("touchstart", e => {
+      if (e.touches[0]) place(nearest(e.touches[0].clientX), e.touches[0]);
+    }, { passive: true });
+    hit.addEventListener("touchmove", e => {
+      if (e.touches[0]) place(nearest(e.touches[0].clientX), e.touches[0]);
+    }, { passive: true });
+    hit.addEventListener("touchend", clear);
+    figure.addEventListener("mouseleave", clear);
 
     return svg;
   }
@@ -270,8 +392,9 @@
                     L${m.left + w},${cy + bh / 2 - r} Q${m.left + w},${cy + bh / 2} ${m.left + w - r},${cy + bh / 2}
                     L${m.left},${cy + bh / 2} Z`;
       const bar = el("path", { class: "bar-mark", d: path, fill: color }, svg);
-      bindMark(bar, figure, () => `<b>${d.key}</b><br><span class="t-sub">${d.value} ${opts.unit || ""}</span>`);
-      bar.setAttribute("aria-label", `${d.key}: ${d.value}`);
+      bindMark(bar, figure, () =>
+        `<b>${d.key}</b><br><span class="t-sub">${d.value} ${opts.unit || ""}${d.sub ? " · " + d.sub : ""}</span>`);
+      bar.setAttribute("aria-label", `${d.key}: ${d.value}${d.sub ? ", " + d.sub : ""}`);
 
       const vl = el("text", { class: "value-label", x: m.left + w + 8, y: cy + 3.5 }, svg);
       vl.textContent = d.value;
@@ -363,5 +486,5 @@
     return out;
   }
 
-  window.Charts = { columns, stackedColumns, bars, egoNetwork, legend, dataTable, series: SERIES, hideTip };
+  window.Charts = { columns, stackedColumns, bars, line, egoNetwork, legend, dataTable, series: SERIES, hideTip };
 })();

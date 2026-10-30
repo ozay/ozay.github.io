@@ -188,6 +188,7 @@ section { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
 .nav .wrap { display: flex; align-items: center; gap: 1rem; }
 
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 600; letter-spacing: -.02em; margin-right: auto; }
+.brand-name { white-space: nowrap; }
 /* The mark is 3:2 artwork with transparent counters, so the page background
    shows through them in either theme. */
 .brand-mark { width: 42px; height: 28px; flex: none; }
@@ -236,7 +237,7 @@ section { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
 @media (max-width: 1180px) {
   .brand-name small { display: none; }
 }
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .nav-toggle { display: grid; }
   .nav-links {
     position: fixed; inset: var(--nav-h) 0 auto 0;

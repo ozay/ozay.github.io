@@ -294,3 +294,19 @@
 .fund-group .section-head { margin-bottom: .9rem; }
 .fund-group .section-head h2 { font-size: clamp(1.3rem, 1.1rem + .7vw, 1.6rem); }
 .fund-compact .fund-what { font-size: .88rem; }
+
+/* ------------------------------------------------------------- chess -- */
+/* Eight tiles rather than four, so they want a tighter minimum than .g-4. */
+.chess-band .grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.chess-band .stat-num { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem); }
+/* A win-loss-draw triple is three numbers wide; it must not break mid-record. */
+.chess-band .stat-num-sm { font-size: clamp(1.3rem, 1rem + 1.1vw, 1.8rem); white-space: nowrap; }
+.chess-asof {
+  margin-top: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: .76rem;
+  letter-spacing: .01em;
+}
+/* The rating line reads as one long sweep; it earns more width than a bar chart. */
+#fig-rating svg { max-width: 100%; }

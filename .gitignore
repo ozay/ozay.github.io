@@ -20,3 +20,6 @@ Icon?
 
 # Claude Code's local preview config — a dev convenience, not part of the site
 .claude/
+
+# Downloaded game archives for tools/chess-refresh.py. Re-fetched on demand.
+tools/.chess-cache/

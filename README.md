@@ -3,6 +3,8 @@
 The personal site of Özay Özaydın, live at <https://ozay.github.io>.
 Static and bilingual (EN/TR). Plain HTML, CSS and vanilla JavaScript —
 no build step, no framework, no package manager, no trackers, no cookies.
+The one request to a third party is the Chess.com public API, which the chess
+page calls for the current rating; it carries no identifier and sets no cookie.
 
 ## Running it locally
 
@@ -18,7 +20,7 @@ double-clicking the HTML files.
 
 ## Updating the content
 
-All the content lives in six files. You should never need to touch the HTML to
+All the content lives in seven files, six of which you edit by hand. You should never need to touch the HTML to
 add a paper, a course, a talk or a post.
 
 | What | File |
@@ -29,6 +31,7 @@ add a paper, a course, a talk or a post.
 | Blog index | `assets/data/posts.js` |
 | Talks and lecture decks | `assets/data/talks.js` |
 | Funding sources and partner institutes | `assets/data/funding.js` |
+| Chess figures (generated — see below) | `assets/data/chess.js` |
 
 Each file starts with a comment explaining its fields. The pages derive their
 figures and headline numbers from these files, so the charts, counts and filters
@@ -86,6 +89,53 @@ The search box covers the name, the `tags` string and both description lines.
 The two posts currently published are starters written to get the blog going.
 Edit or delete them as you like; delete both the `.md` files and the entry in
 `posts.js`.
+
+### The chess page
+
+`chess.html` is a dashboard over the Chess.com game archive. It is the one page
+whose data you do **not** edit by hand.
+
+Two sources feed it, deliberately:
+
+- **The eight numbers in the band at the top** are fetched from the Chess.com
+  public API when the page loads, so the rating and the record are always
+  current. The API needs no key and sets no cookie. If the request fails — the
+  reader is offline, the API is down — the page falls back to the last built
+  snapshot and the "Live from Chess.com" badge stays dark.
+- **Every figure** comes from `assets/data/chess.js`, which is generated.
+  Reading a thousand games in the browser would mean downloading several
+  megabytes of notation to draw one line.
+
+To rebuild the figures after a few hundred more games:
+
+```bash
+python3 tools/chess-refresh.py
+```
+
+It downloads every monthly archive, derives the rating series, the monthly and
+per-colour records, the ending reasons, the opening families, the hour-of-day
+and game-length breakdowns, and writes `assets/data/chess.js`. The archives are
+cached in `tools/.chess-cache/` (git-ignored), so a re-run only fetches the
+months that have changed; delete that folder to force a full download. The
+script needs nothing but Python 3 — no packages.
+
+The username is the `USERNAME` constant at the top of the script. `TZ` next to
+it is the timezone the "when I play" figures are drawn in.
+
+Two things worth knowing before you trust a number on that page:
+
+- The API reports both players' ratings **after** a game. The pairing-gap figure
+  is therefore reconstructed from each game's rating change, not measured; the
+  page says so. Any new figure comparing your rating to your opponent's needs
+  the same correction, or it will simply restate the result.
+- Only rated games at the rapid time class are counted, which is what makes the
+  totals match the record Chess.com shows on your profile. Daily and blitz games
+  are in the archive and are ignored.
+
+The prose on the page reads the numbers out loud. Those sentences are
+interpretation, not data. If a rebuild moves a number far enough that a sentence
+stops being true, the sentence needs editing too; the figures will not do it for
+you.
 
 ## Presentations
 
@@ -176,7 +226,7 @@ The theme works the same way, defaulting to the visitor's system preference.
 
 ```
 index.html  about.html  research.html  teaching.html  talks.html
-writing.html  post.html  contact.html  404.html
+writing.html  post.html  chess.html  contact.html  404.html
 funding.html              unlisted; see "Funding" below
 assets/
   css/base.css      design tokens, layout, shared components
@@ -186,8 +236,9 @@ assets/
   js/charts.js      SVG chart builders (no dependencies)
   js/home.js  about.js  research.js  teaching.js  talks.js  blog.js  post.js
   js/funding.js    the Funding page
+  js/chess.js      the Chess page
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
-  data/             the five content files
+  data/             the content files (chess.js is generated)
   img/logo.svg  favicon.svg
   deck/             the shared slide engine (see "Presentations")
     deck.css  deck.js
@@ -195,6 +246,7 @@ assets/
     vendor/         MathJax 3.2.2 and qrcode-generator 1.4.4
 content/posts/      the Markdown posts
 talks/<slug>/       one folder per talk; talks/_template/ is the starter
+tools/chess-refresh.py    rebuilds assets/data/chess.js from the Chess.com API
 courses/<code>/<week>/   lecture decks, e.g. courses/enmu2050/week-01/
 
 kapikule.html  multivariate-week1-trial.html
@@ -210,7 +262,7 @@ free to hold anything else you like — drafts, source images, the old Google Si
 export — none of which is tracked or published.
 
 The navigation and footer are repeated in each HTML file, since there is no build
-step. If you change a nav link, change it in all ten pages.
+step. If you change a nav link, change it in all eleven pages.
 
 ## Publishing (GitHub Pages)
 
