@@ -132,6 +132,12 @@ window.SITE_TIMELINE = [
     bodyEn: "Seven of the nine master's theses on this site were supervised here, on smart cities, R&D efficiency, Industry 4.0 and bio-innovation.",
     bodyTr: "Bu sitedeki dokuz yüksek lisans tezinin yedisi burada yönetildi: akıllı şehirler, Ar-Ge verimliliği, Endüstri 4.0 ve biyo-inovasyon üzerine." },
 
+  { from: 2020, to: null, kind: "teaching",
+    titleEn: "Red Bull Basement national champions", titleTr: "Red Bull Basement Türkiye birincisi",
+    orgEn: "Doğuş University · Plantric", orgTr: "Doğuş Üniversitesi · Plantric",
+    bodyEn: "A student group I mentored won the national final and finished in the global top ten, at a world competition held in Türkiye for the first time.",
+    bodyTr: "Mentorluk yaptığım öğrenci grubu Türkiye birincisi oldu ve ilk kez Türkiye'de düzenlenen dünya yarışmasında ilk ona girdi." },
+
   { from: 2021, to: 2025, kind: "teaching",
     titleEn: "Teaching at Boğaziçi University", titleTr: "Boğaziçi Üniversitesi'nde ders",
     orgEn: "Computer Education and Educational Technology", orgTr: "Bilgisayar ve Öğretim Teknolojileri Eğitimi",
