@@ -112,7 +112,7 @@ card then shows a DOI button instead of a Google Scholar search link.
 
 `funding.html` is **unlisted**: it is deliberately absent from the navigation,
 the footer and `sitemap.xml`, and carries `<meta name="robots" content="noindex,
-nofollow">`. Reach it at <https://ozay.in/funding.html>. To publish it properly
+nofollow">`. Reach it at <https://ozay.github.io/funding.html>. To publish it properly
 later, add the nav and footer entries back (the `navFunding` i18n key is already
 there, in both languages), drop the `robots` meta, and add it to the sitemap.
 
