@@ -35,7 +35,12 @@
                 pinned to the band at the top of the page
 
    An edition:
-     series     a key in SITE_CONF_SERIES
+     series     a key in SITE_CONF_SERIES. Leave it out for a one-off
+                conference that belongs to no series and give `name` instead:
+                it then shows in the record but not in the directory above,
+                which is right — nobody can go to it again.
+     name       only for a one-off, as above. Like a series name it is not
+                translated: a conference is called what it calls itself.
      year       the year, used in the heading
      edition    optional ordinal, e.g. "45th". `editionTr` gives the Turkish
                 form ("45."); without it the English one is shown in both.
@@ -78,8 +83,8 @@ window.SITE_CONF_GROUPS = {
   turkiye: {
     en: "Türkiye",
     tr: "Türkiye",
-    blurbEn: "The national meeting, and the society behind it.",
-    blurbTr: "Ulusal kongre ve arkasındaki dernek."
+    blurbEn: "The congresses held here year after year, and the societies behind them.",
+    blurbTr: "Her yıl burada düzenlenen kongreler ve arkalarındaki dernekler."
   },
   general: {
     en: "General operational research and industrial engineering",
@@ -115,6 +120,17 @@ window.SITE_CONF_SERIES = [
     noteEn: "The obvious first conference for a Turkish doctoral student: a real audience, in your own language, without a travel grant.",
     noteTr: "Türkiyeli bir doktora öğrencisi için ilk akla gelen kongre: gerçek bir dinleyici kitlesi, kendi dilinizde ve seyahat desteği gerektirmeden.",
     tags: "türkiye turkey national ulusal yöneylem endüstri mühendisliği turkish YAD" },
+
+  { key: "lmscm", short: "LMSCM", group: "turkiye", often: true,
+    name: "International Logistics and Supply Chain Congress",
+    url: "https://www.loder.org.tr",
+    freqEn: "Annual", freqTr: "Yıllık",
+    whenEn: "Usually October", whenTr: "Genellikle Ekim",
+    whatEn: "Logistics and supply chain research, run with LODER, the Turkish logistics association, and hosted by a different university each year — Gaziantep in 2023, Istanbul in 2024 and 2025.",
+    whatTr: "Lojistik ve tedarik zinciri araştırmaları; Lojistik Derneği (LODER) ile birlikte, her yıl başka bir üniversitenin ev sahipliğinde düzenleniyor — 2023'te Gaziantep, 2024 ve 2025'te İstanbul.",
+    noteEn: "Each edition lives on its host university's own site and goes offline afterwards, so there is no permanent address for the series. LODER's page is the reliable way in.",
+    noteTr: "Her toplantı ev sahibi üniversitenin kendi sitesinde yayımlanıyor ve sonrasında kapanıyor; serinin kalıcı bir adresi yok. Güvenilir giriş noktası LODER'in sayfası.",
+    tags: "logistics supply chain lojistik tedarik zinciri LODER türkiye turkey congress kongre" },
 
   /* ------------------------------------------------------------ general -- */
 
@@ -283,6 +299,12 @@ window.SITE_CONF_SERIES = [
    then the page runs on the two entries below, both of which come from
    elsewhere on this site rather than from guesswork.
 --------------------------------------------------------------------------- */
+/* Waiting on details, so deliberately not listed as an edition yet:
+   the next LMSCM, which Özay is helping organise. As of 4 Nov 2026 LODER
+   lists a 24th congress but publishes no dates, host or call for it, there is
+   no congress site, and his own role on it is not settled. Add an entry here
+   once any of the year, the city or the role is fixed — a `year` alone is
+   enough to list it, and `roles` can follow later. */
 window.SITE_CONF_EDITIONS = [
 
   { series: "yaem", year: 2026, edition: "45th", editionTr: "45.",
@@ -329,7 +351,47 @@ window.SITE_CONF_EDITIONS = [
      anyone went. Only upcoming editions are shown, so there is no point
      listing past ones unless you were there and give them a role. */
   { series: "wctr", year: 2029, edition: "18th", editionTr: "18.",
-    city: "Brisbane", country: "Australia", countryTr: "Avustralya" }
+    city: "Brisbane", country: "Australia", countryTr: "Avustralya" },
+
+  { series: "mcdm", year: 2019, edition: "25th", editionTr: "25.",
+    city: "İstanbul", country: "Türkiye",
+    date: "2019-06-16", dateEnd: "2019-06-21",
+    roles: ["chair"],
+    noteEn: "At Istanbul Technical University, on MCDM beyond the information age.",
+    noteTr: "İstanbul Teknik Üniversitesi'nde; teması bilgi çağının ötesinde ÇKKV." },
+
+  { series: "lmscm", year: 2017, edition: "15th", editionTr: "15.",
+    city: "İstanbul", country: "Türkiye",
+    date: "2017-10-19", dateEnd: "2017-10-20",
+    roles: ["organising"],
+    noteEn: "Hosted by Doğuş University with LODER.",
+    noteTr: "Doğuş Üniversitesi ev sahipliğinde, LODER ile birlikte." },
+
+  { series: "yaem", year: 2012, edition: "32nd", editionTr: "32.",
+    city: "İstanbul", country: "Türkiye",
+    date: "2012-06-20", dateEnd: "2012-06-22",
+    roles: ["organising"] },
+
+  /* No `series`: a one-off that was never repeated, so it carries its own
+     name and stays out of the directory. */
+  { year: 2009,
+    name: "International Conference on Prospects for Research in Transport and Logistics on a Regional-Global Perspective",
+    city: "İstanbul", country: "Türkiye",
+    date: "2009-02-12", dateEnd: "2009-02-14",
+    roles: ["organising"],
+    noteEn: "The first and only one, at Doğuş University. I edited the proceedings, published as Doğuş University Publications No. 3.",
+    noteTr: "İlki ve tek olanı, Doğuş Üniversitesi'nde. Bildiri kitabını ben derledim; Doğuş Üniversitesi Yayınları No. 3 olarak yayımlandı." },
+
+  /* Also no `series`. The ordinal is left off on purpose: the proceedings
+     records call it the 11th IFAC symposium and EconBiz calls it the 8th, and
+     there is no point picking one. */
+  { year: 2007,
+    name: "IFAC Symposium on Computational Economics and Financial and Industrial Systems (CEFIS)",
+    city: "İstanbul", country: "Türkiye",
+    date: "2007-10-09", dateEnd: "2007-10-11",
+    roles: ["organising"],
+    noteEn: "Held at Doğuş University.",
+    noteTr: "Doğuş Üniversitesi'nde yapıldı." },
 
   /* A full example, for when you add the real ones:
 

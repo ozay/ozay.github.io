@@ -95,7 +95,9 @@
 
   /* The edition card, built on the same markup as a talk. */
   function editionCard(e) {
-    const s = byKey[e.series] || { name: e.series, short: "" };
+    /* A one-off conference has no `series`; it carries its own `name` instead
+       and so never appears in the directory above, only in the record. */
+    const s = byKey[e.series] || { name: e.name || e.series || "", short: "" };
     const roles = (e.roles || []).filter(r => ROLES[r]);
     const place = [e.city, field(e, "country")].filter(Boolean).join(", ");
     const sub = [field(e, "edition"), place].filter(Boolean).join(" · ");

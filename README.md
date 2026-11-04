@@ -75,6 +75,10 @@ key, a `year`, a city, and then as much as you have actually checked:
   is unknown.
 - **`talk`** takes the `date` of an entry in `talks.js`, and the card then
   carries that talk's slide link.
+- **A one-off conference** that belongs to no series leaves `series` out and
+  gives `name` instead. It then shows in the record but not in the directory,
+  which is right: nobody can go to it again. Like a series name, `name` is not
+  translated.
 - **`editionTr` and `countryTr`** give the Turkish forms of the ordinal and the
   country ("45." for "45th", "Almanya" for "Germany"). Without them the English
   form shows in both languages, which is right for a city but wrong for a
