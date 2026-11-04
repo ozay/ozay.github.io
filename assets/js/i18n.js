@@ -7,7 +7,7 @@ window.I18N = {
     /* nav + chrome */
     navHome: "Home", navAbout: "About", navResearch: "Research", navTeaching: "Teaching",
     navWriting: "Writing", navContact: "Contact", navTalks: "Talks", navFunding: "Funding",
-    navChess: "Chess",
+    navChess: "Chess", navConferences: "Conferences",
     menu: "Menu", themeToggle: "Toggle colour theme", skipLink: "Skip to content",
     roleLine: "Assistant Professor, Industrial Engineering",
 
@@ -90,6 +90,13 @@ window.I18N = {
     contactPost: "In person, or by post", contactPostSub: "For the nostalgia of a face-to-face meeting or a letter.",
     copy: "Copy",
 
+    /* conferences page */
+    searchConferences: "Search conferences, methods, fields…",
+    confNext: "Next",
+    confSite: "Conference site",
+    confSeriesSite: "Series home",
+    confDeadline: "Deadline",
+
     /* funding page */
     searchFunding: "Search funders, programmes, countries…",
     allKinds: "All kinds",
@@ -150,7 +157,7 @@ window.I18N = {
   tr: {
     navHome: "Ana Sayfa", navAbout: "Hakkımda", navResearch: "Araştırma", navTeaching: "Dersler",
     navWriting: "Yazılar", navContact: "İletişim", navTalks: "Konuşmalar", navFunding: "Fonlar",
-    navChess: "Satranç",
+    navChess: "Satranç", navConferences: "Kongreler",
     menu: "Menü", themeToggle: "Renk temasını değiştir", skipLink: "İçeriğe geç",
     roleLine: "Dr. Öğretim Üyesi, Endüstri Mühendisliği",
 
@@ -226,6 +233,13 @@ window.I18N = {
     contactPhone: "Telefon", contactPhoneSub: "Sesli söylemenin daha hızlı olduğu durumlar için.",
     contactPost: "Yüz yüze ya da posta ile", contactPostSub: "Yüz yüze görüşmenin ya da mektubun nostaljisi için.",
     copy: "Kopyala",
+
+    /* conferences page */
+    searchConferences: "Kongre, yöntem, alan ara…",
+    confNext: "Sıradaki",
+    confSite: "Kongre sitesi",
+    confSeriesSite: "Seri sayfası",
+    confDeadline: "Son başvuru",
 
     /* funding page */
     searchFunding: "Kurum, program, ülke ara…",

@@ -26,6 +26,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ozay.github.io/conferences.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ozay.github.io/courses/enmu2050/week-01/</loc>
     <lastmod>2026-10-24</lastmod>
     <priority>0.5</priority>

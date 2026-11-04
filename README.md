@@ -20,7 +20,7 @@ double-clicking the HTML files.
 
 ## Updating the content
 
-All the content lives in seven files, six of which you edit by hand. You should never need to touch the HTML to
+All the content lives in eight files, seven of which you edit by hand. You should never need to touch the HTML to
 add a paper, a course, a talk or a post.
 
 | What | File |
@@ -30,6 +30,7 @@ add a paper, a course, a talk or a post.
 | Bio, links, supervised theses, career timeline | `assets/data/profile.js` |
 | Blog index | `assets/data/posts.js` |
 | Talks and lecture decks | `assets/data/talks.js` |
+| Conference series and editions | `assets/data/conferences.js` |
 | Funding sources and partner institutes | `assets/data/funding.js` |
 | Chess figures (generated — see below) | `assets/data/chess.js` |
 
@@ -46,6 +47,46 @@ until its last day has passed; nothing needs taking down afterwards. Set
 `paper` to a publication's exact title and the card links to it on the Research
 page. Lecture decks go in `SITE_LECTURES` instead, and their course's card on
 the Teaching page gains a "Lecture slides" button.
+
+### A new conference
+
+`conferences.js` holds two lists, and the split is the point of the file.
+
+`SITE_CONF_SERIES` is the recurring meeting itself — EURO, YAEM, WCTR. A series
+changes far more slowly than its dates, so this list stays useful even when
+nobody has refreshed the deadlines for a year. Add one when you find a meeting
+worth other people's time; set `often: true` and it is also pinned to the band
+near the top of the page.
+
+`SITE_CONF_EDITIONS` is one particular year of one series. Give it a `series`
+key, a `year`, a city, and then as much as you have actually checked:
+
+- **No `roles`** and it is a listing — it tells a visitor the meeting is
+  happening, and claims nothing about you.
+- **With `roles`** (`chair`, `organising`, `scientific`, `track`, `reviewer`,
+  `speaker`, `attendee`) it joins your record, and shows under "Coming up"
+  while it is still in the future.
+- **`deadline`** puts it in "Open calls" until that day passes, then drops it.
+  Leave it out unless you have opened the page and read it. A wrong deadline is
+  worse than no deadline.
+- **`date`/`dateEnd` are optional.** With no `date` the card shows the year
+  alone — which is how to list a meeting whose days you have not checked. A
+  year-only edition counts as upcoming only in a later year, because its month
+  is unknown.
+- **`talk`** takes the `date` of an entry in `talks.js`, and the card then
+  carries that talk's slide link.
+- **`editionTr` and `countryTr`** give the Turkish forms of the ordinal and the
+  country ("45." for "45th", "Almanya" for "Germany"). Without them the English
+  form shows in both languages, which is right for a city but wrong for a
+  country. The series `name` is deliberately not translated: a conference is
+  called what it calls itself.
+
+Only upcoming editions and past ones with a role are shown, so there is no
+point listing a past meeting you had nothing to do with.
+
+Set `SITE_CONF_CHECKED` to the day you last opened the links. It is printed in
+the caveat at the foot of the page, and a directory that does not say when it
+was last looked at is worth nothing.
 
 ### Each semester
 
@@ -227,6 +268,7 @@ The theme works the same way, defaulting to the visitor's system preference.
 ```
 index.html  about.html  research.html  teaching.html  talks.html
 writing.html  post.html  chess.html  contact.html  404.html
+conferences.html
 funding.html              unlisted; see "Funding" below
 assets/
   css/base.css      design tokens, layout, shared components
@@ -236,6 +278,7 @@ assets/
   js/charts.js      SVG chart builders (no dependencies)
   js/home.js  about.js  research.js  teaching.js  talks.js  blog.js  post.js
   js/funding.js    the Funding page
+  js/conferences.js the Conferences page
   js/chess.js      the Chess page
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
   data/             the content files (chess.js is generated)
@@ -262,7 +305,10 @@ free to hold anything else you like — drafts, source images, the old Google Si
 export — none of which is tracked or published.
 
 The navigation and footer are repeated in each HTML file, since there is no build
-step. If you change a nav link, change it in all eleven pages.
+step. If you change a nav link, change it in all twelve pages — and match whole
+lines, because the header's `<li>` is a suffix of the footer's (same markup, six
+spaces of indent against ten), so a plain substring replace drops a stray
+nav-indented link into the footer list.
 
 ## Publishing (GitHub Pages)
 
