@@ -23,3 +23,6 @@ Icon?
 
 # Downloaded game archives for tools/chess-refresh.py. Re-fetched on demand.
 tools/.chess-cache/
+
+# WCTRS newsletter scans — 55 MB, shared by Dropbox link instead of the repo.
+wctrs/newsletters_1988-1998.pdf

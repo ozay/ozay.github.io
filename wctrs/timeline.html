@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WCTRS 50-Year Timeline</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1d2433;--mute:#6b7280;--line:#e2e0d8;--acc:#1f4e79;--acc2:#e8eff7;--yel:#fff200;--yelbg:#fff6a8;--yelbd:#d8c400;--na:#ecebe5}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171d;--card:#1d222b;--ink:#e8eaee;--mute:#9aa3b2;--line:#2e3542;--acc:#7fb2e5;--acc2:#233246;--yelbg:#5a5200;--yelbd:#b5a300;--na:#262b35}}
+:root[data-theme=dark]{--bg:#14171d;--card:#1d222b;--ink:#e8eaee;--mute:#9aa3b2;--line:#2e3542;--acc:#7fb2e5;--acc2:#233246;--yelbg:#5a5200;--yelbd:#b5a300;--na:#262b35}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:22px 16px 10px;max-width:1200px;margin:auto}
+h1{margin:0;font-size:26px}h1 small{color:var(--mute);font-weight:400;font-size:15px;display:block;margin-top:4px}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+.bar>div{max-width:1200px;margin:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button,input{font:inherit;color:var(--ink)}
+.tab,.btn{border:1px solid var(--line);background:var(--card);padding:6px 12px;border-radius:8px;cursor:pointer}
+.tab[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+input[type=search]{border:1px solid var(--line);background:var(--card);padding:6px 10px;border-radius:8px;min-width:200px;flex:1;max-width:320px}
+label.chk{display:flex;gap:6px;align-items:center;cursor:pointer}
+.sp{flex:1}
+main{max-width:1200px;margin:auto;padding:16px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:13px;margin:4px 0 14px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px;border:1px solid var(--yelbd);background:var(--yelbg)}
+.sw.n{background:var(--card);border-color:var(--line)}
+.u{background:var(--yelbg)!important;border:1px solid var(--yelbd)!important}
+/* cards */
+.conf{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.ch{display:flex;gap:14px;align-items:center;padding:12px 16px;background:var(--acc2);cursor:pointer}
+.yr{font-size:26px;font-weight:700;color:var(--acc);min-width:70px}
+.city{font-size:19px;font-weight:600}.host{color:var(--mute);font-size:14px}
+.badge{margin-left:auto;font-size:12px;background:var(--yelbg);border:1px solid var(--yelbd);border-radius:99px;padding:2px 9px;white-space:nowrap}
+.chev{transition:.2s;color:var(--mute)}.conf.closed .chev{transform:rotate(-90deg)}.conf.closed .rows{display:none}
+.rows{padding:6px 16px 12px}
+.r{display:grid;grid-template-columns:200px 1fr auto;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);align-items:start}
+.r:last-child{border:0}
+.rn{color:var(--mute);font-size:13px;padding-top:2px}
+.v{padding:2px 8px;border-radius:6px;display:inline-block}
+.term{color:var(--mute);font-size:12px;margin-left:6px}
+.empty{color:var(--mute);font-style:italic;opacity:.6}
+.edit{opacity:.0;border:0;background:none;cursor:pointer;color:var(--acc);font-size:13px}
+.r:hover .edit,.edit.has,.r:focus-within .edit{opacity:1}
+.sug{grid-column:2/4;display:none}.sug.on{display:block}
+.sug textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px;font:inherit;min-height:56px}
+.hl{outline:2px solid var(--acc);outline-offset:1px}
+/* matrix */
+.mwrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);max-height:80vh}
+.mx{display:grid;position:relative}
+.mx>div{border-bottom:1px solid var(--line);padding:5px 6px;font-size:12.5px;line-height:1.3;min-width:0;overflow-wrap:anywhere}
+.mx .lab{position:sticky;left:0;background:var(--card);z-index:3;font-weight:600;border-right:2px solid var(--line);font-size:12px}
+.mx .yh{position:sticky;top:0;background:var(--card);z-index:2;text-align:center;font-weight:600;color:var(--mute);font-size:12px;border-left:1px solid var(--line)}
+.mx .yh.c{color:var(--acc);background:var(--acc2)}
+.mx .e{background:var(--acc2);border:1px solid var(--line);border-radius:6px;margin:2px 1px}
+.mx .cf{background:var(--acc);color:#fff;font-weight:600;border-radius:6px;margin:2px 1px;text-align:center}
+.mx .gap{background:var(--na)}
+/* review list */
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mute);font-size:13px}
+tr.rv{cursor:pointer}tr.rv:hover{background:var(--acc2)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);max-width:640px;width:92%}
+dialog textarea{width:100%;min-height:220px;font:13px/1.4 ui-monospace,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+.hide{display:none!important}
+@media(max-width:640px){.r{grid-template-columns:1fr auto}.rn{grid-column:1/3}.sug{grid-column:1/3}.ch{flex-wrap:wrap}}
+@media print{.bar,.edit,.sug{display:none!important}.conf.closed .rows{display:block}}
+</style></head><body>
+<header><h1>WCTRS 50-Year Timeline<small>Conferences, hosts and officeholders, 1977–2029 · draft for author review</small></h1></header>
+<div class="bar"><div>
+<button class="tab" data-v="cards" aria-pressed="true">Conferences</button>
+<button class="tab" data-v="matrix" aria-pressed="false">Matrix</button>
+<button class="tab" data-v="review" aria-pressed="false">To verify (<span id="nu"></span>)</button>
+<input type="search" id="q" placeholder="Search a name, city or role…" aria-label="Search">
+<label class="chk"><input type="checkbox" id="only"> Only uncertain</label>
+<span class="sp"></span>
+<button class="btn" id="exp">Send my amendments (<span id="ns">0</span>)</button>
+</div></div>
+<main>
+<div class="legend"><span><span class="sw"></span>Yellow: not certain, please check</span><span><span class="sw n"></span>Confirmed in the source sheet</span><span>Hover a row and click <b>✎ Amend</b> to suggest a correction or fill a gap.</span></div>
+<section id="cards"></section>
+<section id="matrix" class="hide"></section>
+<section id="review" class="hide"></section>
+</main>
+<dialog id="dlg"><h3 style="margin-top:0">Your amendments</h3>
+<p style="color:var(--mute);margin:0 0 8px">Copy this text into a reply email (or download it) and send it back to the WCTRS 50th-anniversary team.</p>
+<textarea id="out" readonly></textarea>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" id="cp">Copy</button><button class="btn" id="dl">Download .txt</button><span class="sp"></span><button class="btn" onclick="dlg.close()">Close</button></div></dialog>
+<script>
+const D={"confs": [{"city": "Rotterdam", "col": 2, "year": 1977, "u": false}, {"city": "London", "col": 5, "year": 1980, "u": false}, {"city": "Hamburg", "col": 8, "year": 1983, "u": false}, {"city": "Vancouver", "col": 11, "year": 1986, "u": false}, {"city": "Yokohama", "col": 15, "year": 1989, "u": false}, {"city": "Lyon", "col": 19, "year": 1992, "u": false}, {"city": "Sydney", "col": 23, "year": 1995, "u": false}, {"city": "Antwerp", "col": 27, "year": 1998, "u": false}, {"city": "Seoul", "col": 31, "year": 2001, "u": false}, {"city": "Istanbul", "col": 35, "year": 2004, "u": false}, {"city": "Berkeley", "col": 39, "year": 2007, "u": false}, {"city": "Lisbon", "col": 43, "year": 2010, "u": false}, {"city": "Rio", "col": 47, "year": 2013, "u": false}, {"city": "Shanghai", "col": 51, "year": 2016, "u": false}, {"city": "Mumbai", "col": 55, "year": 2019, "u": false}, {"city": "Montreal", "col": 60, "year": 2023, "u": false}, {"city": "Toulouse", "col": 64, "year": 2026, "u": false}, {"city": "Brisbane", "col": 68, "year": 2029, "u": false}], "roles": [{"row": 3, "name": "Host University", "entries": [{"text": "??", "c0": 2, "c1": 2, "y0": 1977, "y1": 1977, "u": true}, {"text": "TRRL (Transport Road Research Laboratory)", "c0": 5, "c1": 5, "y0": 1980, "y1": 1980, "u": false}, {"text": "TU Dortmund (formerly Dortmund University) & City of Hamburg", "c0": 8, "c1": 8, "y0": 1983, "y1": 1983, "u": false}, {"text": "University of British Columbia", "c0": 11, "c1": 12, "y0": 1986, "y1": 1986, "u": false}, {"text": "University of Tokyo & City of Yokohama", "c0": 15, "c1": 16, "y0": 1989, "y1": 1989, "u": false}, {"text": "University of Lyon II", "c0": 19, "c1": 20, "y0": 1992, "y1": 1992, "u": false}, {"text": "University of New South Wales", "c0": 23, "c1": 24, "y0": 1995, "y1": 1995, "u": false}, {"text": "University of Antwerp & ??", "c0": 27, "c1": 28, "y0": 1998, "y1": 1998, "u": true}, {"text": "Seoul National University", "c0": 31, "c1": 32, "y0": 2001, "y1": 2001, "u": false}, {"text": "Istanbul Technical University", "c0": 35, "c1": 36, "y0": 2004, "y1": 2004, "u": false}, {"text": "University of California, Berkeley", "c0": 39, "c1": 40, "y0": 2007, "y1": 2007, "u": false}, {"text": "??", "c0": 43, "c1": 44, "y0": 2010, "y1": 2010, "u": true}, {"text": "??", "c0": 47, "c1": 47, "y0": 2013, "y1": 2013, "u": true}, {"text": "Tongji University", "c0": 51, "c1": 52, "y0": 2016, "y1": 2016, "u": false}, {"text": "IIT-Bombay", "c0": 55, "c1": 56, "y0": 2019, "y1": 2019, "u": false}, {"text": "CIRRELT", "c0": 60, "c1": 61, "y0": 2023, "y1": 2023, "u": false}, {"text": "Toulouse School of Economy", "c0": 64, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}, {"row": 4, "name": "Society President", "entries": [{"text": "Marvin Manheim", "c0": 12, "c1": 19, "y0": 1986, "y1": 1992, "u": false}, {"text": "Alain Bonnafous", "c0": 20, "c1": 27, "y0": 1992, "y1": 1998, "u": false}, {"text": "Hideo Nakamura", "c0": 28, "c1": 31, "y0": 1998, "y1": 2001, "u": false}, {"text": "Werner Rothengatter", "c0": 32, "c1": 39, "y0": 2001, "y1": 2007, "u": false}, {"text": "Anthony D. May", "c0": 40, "c1": 47, "y0": 2007, "y1": 2013, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 48, "c1": 55, "y0": 2013, "y1": 2019, "u": false}, {"text": "Tae Oum", "c0": 56, "c1": 64, "y0": 2019, "y1": 2026, "u": false}, {"text": "Rosario Macario", "c0": 65, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}, {"row": 5, "name": "Scientific Committee Chair", "entries": [{"text": "Werner Rothengatter", "c0": 29, "c1": 31, "y0": 1999, "y1": 2001, "u": false}, {"text": "Hilde Meersman", "c0": 33, "c1": 35, "y0": 2002, "y1": 2004, "u": false}, {"text": "Hilde Meersman", "c0": 37, "c1": 39, "y0": 2005, "y1": 2007, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 41, "c1": 43, "y0": 2008, "y1": 2010, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 45, "c1": 47, "y0": 2011, "y1": 2013, "u": false}, {"text": "Manfred Boltze", "c0": 49, "c1": 51, "y0": 2014, "y1": 2016, "u": false}, {"text": "Lori Tavasszy", "c0": 53, "c1": 55, "y0": 2017, "y1": 2019, "u": false}, {"text": "Lori Tavasszy", "c0": 57, "c1": 60, "y0": 2020, "y1": 2023, "u": false}, {"text": "Lori Tavasszy", "c0": 62, "c1": 64, "y0": 2024, "y1": 2026, "u": false}]}, {"row": 6, "name": "Prize Sub-committee Chair", "entries": [{"text": "Yoshitsugu Hayashi", "c0": 13, "c1": 15, "y0": 1987, "y1": 1989, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 17, "c1": 19, "y0": 1990, "y1": 1992, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 21, "c1": 23, "y0": 1993, "y1": 1995, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 25, "c1": 27, "y0": 1996, "y1": 1998, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 29, "c1": 31, "y0": 1999, "y1": 2001, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 33, "c1": 35, "y0": 2002, "y1": 2004, "u": false}, {"text": "Yoshitsugu Hayashi", "c0": 37, "c1": 39, "y0": 2005, "y1": 2007, "u": false}, {"text": "Sergio Jara-Diaz", "c0": 41, "c1": 43, "y0": 2008, "y1": 2010, "u": false}, {"text": "Sergio Jara-Diaz", "c0": 45, "c1": 47, "y0": 2011, "y1": 2013, "u": false}, {"text": "Sergio Jara-Diaz", "c0": 49, "c1": 51, "y0": 2014, "y1": 2016, "u": false}, {"text": "Sergio Jara-Diaz", "c0": 53, "c1": 55, "y0": 2017, "y1": 2019, "u": false}, {"text": "Sergio Jara-Diaz", "c0": 57, "c1": 60, "y0": 2020, "y1": 2023, "u": false}, {"text": "Chandra Bhat", "c0": 62, "c1": 64, "y0": 2024, "y1": 2026, "u": false}]}, {"row": 7, "name": "Conference Director", "entries": [{"text": "Alec Silverleaf", "c0": 2, "c1": 2, "y0": 1977, "y1": 1977, "u": false}, {"text": "Alec Silverleaf", "c0": 5, "c1": 5, "y0": 1980, "y1": 1980, "u": false}, {"text": "Paul Baron", "c0": 8, "c1": 8, "y0": 1983, "y1": 1983, "u": false}, {"text": "Trevor Teaver", "c0": 11, "c1": 11, "y0": 1986, "y1": 1986, "u": false}, {"text": "Hideo Nakamura", "c0": 13, "c1": 15, "y0": 1987, "y1": 1989, "u": false}, {"text": "Alain Bonnafous", "c0": 17, "c1": 19, "y0": 1990, "y1": 1992, "u": false}, {"text": "John Black", "c0": 21, "c1": 23, "y0": 1993, "y1": 1995, "u": false}, {"text": "Bob Vermercht", "c0": 25, "c1": 27, "y0": 1996, "y1": 1998, "u": false}, {"text": "Changho Park", "c0": 29, "c1": 31, "y0": 1999, "y1": 2001, "u": false}, {"text": "Yücel Candemir", "c0": 33, "c1": 35, "y0": 2002, "y1": 2004, "u": false}, {"text": "Elisabeth Deakin", "c0": 37, "c1": 39, "y0": 2005, "y1": 2007, "u": false}, {"text": "Jose Viegas", "c0": 41, "c1": 43, "y0": 2008, "y1": 2010, "u": false}, {"text": "Romulo Orrico", "c0": 45, "c1": 47, "y0": 2011, "y1": 2013, "u": false}, {"text": "Haixiao Pan", "c0": 49, "c1": 51, "y0": 2014, "y1": 2016, "u": false}, {"text": "Krishna Rao", "c0": 53, "c1": 55, "y0": 2017, "y1": 2019, "u": false}, {"text": "Catherine Morency", "c0": 57, "c1": 60, "y0": 2020, "y1": 2023, "u": false}, {"text": "Marc Ivaldi", "c0": 62, "c1": 64, "y0": 2024, "y1": 2026, "u": false}]}, {"row": 8, "name": "Program Committee Chair", "entries": [{"text": "?? Michel Frybourg, David Genton, Marvin Manheim, Hideo Nakamura, Alec Silverleaf", "c0": 2, "c1": 2, "y0": 1977, "y1": 1977, "u": true}, {"text": "?? Michel Frybourg, David Genton, Marvin Manheim, Hideo Nakamura, Alec Silverleaf", "c0": 5, "c1": 5, "y0": 1980, "y1": 1980, "u": true}, {"text": "?? Michel Frybourg, David Genton, Marvin Manheim, Hideo Nakamura, Alec Silverleaf", "c0": 8, "c1": 8, "y0": 1983, "y1": 1983, "u": true}, {"text": "Tae Oum", "c0": 11, "c1": 11, "y0": 1986, "y1": 1986, "u": false}, {"text": "Hideyuki Okano, Shigeru Morichi, Hisa Morisugi, Kazu Miyamoto, Yoshitsugu Hayashi", "c0": 13, "c1": 15, "y0": 1987, "y1": 1989, "u": false}, {"text": "Michel Frybourg", "c0": 17, "c1": 19, "y0": 1990, "y1": 1992, "u": false}, {"text": "David Hensher", "c0": 21, "c1": 23, "y0": 1993, "y1": 1995, "u": false}, {"text": "Hilde Meersman, Eddy Van de Voorde", "c0": 25, "c1": 27, "y0": 1996, "y1": 1998, "u": false}, {"text": "Jaehek Oh", "c0": 29, "c1": 31, "y0": 1999, "y1": 2001, "u": false}, {"text": "Füsun Ülengin", "c0": 33, "c1": 35, "y0": 2002, "y1": 2004, "u": false}, {"text": "??? Kim", "c0": 37, "c1": 39, "y0": 2005, "y1": 2007, "u": true}, {"text": "Rosario Macario", "c0": 41, "c1": 43, "y0": 2008, "y1": 2010, "u": false}, {"text": "Rosario Macario", "c0": 45, "c1": 47, "y0": 2011, "y1": 2013, "u": false}, {"text": "Keping Li", "c0": 49, "c1": 51, "y0": 2014, "y1": 2016, "u": false}, {"text": "Gopal Patil", "c0": 53, "c1": 55, "y0": 2017, "y1": 2019, "u": false}, {"text": "Martin Trepanier", "c0": 57, "c1": 60, "y0": 2020, "y1": 2023, "u": false}, {"text": "Stephanie Tisser ??", "c0": 62, "c1": 64, "y0": 2024, "y1": 2026, "u": true}]}, {"row": 9, "name": "Secretary General", "entries": [{"text": "(??? Delmazur, Karin Delvert)", "c0": 17, "c1": 27, "y0": 1990, "y1": 1998, "u": true}, {"text": "Alain Bonnafous", "c0": 28, "c1": 31, "y0": 1998, "y1": 2001, "u": false}, {"text": "Yves Crozet", "c0": 32, "c1": 47, "y0": 2001, "y1": 2013, "u": false}, {"text": "Anthony D. May", "c0": 48, "c1": 51, "y0": 2013, "y1": 2016, "u": false}, {"text": "Greg Marsden", "c0": 52, "c1": 60, "y0": 2016, "y1": 2023, "u": false}, {"text": "Dan Sperling, Giovanni Circela", "c0": 61, "c1": 65, "y0": 2023, "y1": 2026, "u": false}]}, {"row": 10, "name": "Secretary", "entries": [{"text": "Jennie Stones", "c0": 51, "c1": 51, "y0": 2016, "y1": 2016, "u": false}, {"text": "Jennie Stones", "c0": 55, "c1": 55, "y0": 2019, "y1": 2019, "u": false}, {"text": "??", "c0": 60, "c1": 60, "y0": 2023, "y1": 2023, "u": true}, {"text": "Grant Matson", "c0": 64, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}, {"row": 11, "name": "Host for Secretariat", "entries": [{"text": "LET, University Lyon II, France", "c0": 19, "c1": 50, "y0": 1992, "y1": 2015, "u": false}, {"text": "ITS, University of Leeds, UK", "c0": 51, "c1": 60, "y0": 2016, "y1": 2023, "u": false}, {"text": "Center of Transportation Studies, UC Davis, USA", "c0": 64, "c1": 65, "y0": 2026, "y1": 2026, "u": true}]}, {"row": 12, "name": "Constitution and OP", "entries": [{"text": "Ali Huzayyin", "c0": 19, "c1": 64, "y0": 1992, "y1": 2026, "u": false}, {"text": "Thierry Vanelslander", "c0": 65, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}, {"row": 13, "name": "EiC and Co-EiC, Transport Policy", "entries": [{"text": "Moche Ben Akiva, Yoshitsugu Hayashi, John Preston", "c0": 27, "c1": 35, "y0": 1998, "y1": 2004, "u": false}, {"text": "Roger Vickerman", "c0": 39, "c1": 47, "y0": 2007, "y1": 2013, "u": false}, {"text": "Roger or Tae??", "c0": 51, "c1": 51, "y0": 2016, "y1": 2016, "u": true}, {"text": "Tae Oum", "c0": 55, "c1": 55, "y0": 2019, "y1": 2019, "u": false}, {"text": "Hai-Jun Huang ??", "c0": 60, "c1": 64, "y0": 2023, "y1": 2026, "u": true}, {"text": "Xiaowen Fu", "c0": 65, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}, {"row": 14, "name": "EiC and Co-EiC, CSTP", "entries": [{"text": "Rosario Macario, ??", "c0": 51, "c1": 59, "y0": 2016, "y1": 2022, "u": true}, {"text": "Xiaowen Fu", "c0": 60, "c1": 63, "y0": 2023, "y1": 2025, "u": false}, {"text": "Pierluigi Coppola", "c0": 64, "c1": 65, "y0": 2026, "y1": 2026, "u": false}]}], "years": [1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029], "colw": [81, 25, 25, 81, 25, 25, 81, 25, 25, 62, 62, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 81, 81, 25, 25, 25, 81, 81, 25, 25, 81, 135, 81, 25, 81], "anch": [[2, 1977], [3, 1978], [4, 1979], [5, 1980], [6, 1981], [7, 1982], [8, 1983], [9, 1984], [10, 1985], [11, 1986], [13, 1987], [14, 1988], [15, 1989], [17, 1990], [18, 1991], [19, 1992], [21, 1993], [22, 1994], [23, 1995], [25, 1996], [26, 1997], [27, 1998], [29, 1999], [30, 2000], [31, 2001], [33, 2002], [34, 2003], [35, 2004], [37, 2005], [38, 2006], [39, 2007], [41, 2008], [42, 2009], [43, 2010], [45, 2011], [46, 2012], [47, 2013], [49, 2014], [50, 2015], [51, 2016], [53, 2017], [54, 2018], [55, 2019], [57, 2020], [58, 2021], [59, 2022], [60, 2023], [62, 2024], [63, 2025], [64, 2026], [66, 2027], [67, 2028], [68, 2029]]};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clean=t=>esc(t).replace(/\?\?\??/g,'<b title="uncertain">?</b>');
+const roles=D.roles.filter(r=>r.row!==3);           // host shown in card header
+const hostRole=D.roles.find(r=>r.row===3);
+const store={get(){try{return JSON.parse(localStorage.getItem('wctrs50')||'{}')}catch(e){return{}}},set(o){try{localStorage.setItem('wctrs50',JSON.stringify(o))}catch(e){}}};
+let sug=store.get();
+const covers=(e,c)=>e.c0<=c&&c<=e.c1;
+const termTxt=e=>e.y0===e.y1?'':`${e.y0}–${e.y1}`;
+const key=(c,r)=>c.year+'|'+r.name;
+// build per-conference model
+D.confs.forEach(c=>{
+  c.host=(hostRole.entries.find(e=>covers(e,c.col))||null);
+  c.rows=roles.map(r=>({role:r,es:r.entries.filter(e=>covers(e,c.col))}));
+});
+const unc=[];
+D.confs.forEach(c=>{if(c.host&&c.host.u)unc.push({c,role:'Host University',e:c.host});
+  c.rows.forEach(x=>x.es.forEach(e=>{if(e.u)unc.push({c,role:x.role.name,e})}))});
+const seen=new Map();unc.forEach(u=>{const k=u.role+'|'+u.e.text+'|'+u.e.c0;if(seen.has(k))seen.get(k).more.push(u.c);else{u.more=[u.c];seen.set(k,u)}});
+const uniq=[...seen.values()];$('#nu').textContent=uniq.length;
+function rowHTML(c,role,es,id){
+  const v=es.length?es.map(e=>`<span class="v ${e.u?'u':''}">${clean(e.text)}</span>${termTxt(e)&&role!=='Host University'?`<span class="term">${termTxt(e)}</span>`:''}`).join('<br>'):'<span class="empty">no entry</span>';
+  const u=es.some(e=>e.u);
+  return `<div class="r" data-id="${esc(id)}" data-u="${u?1:0}" data-t="${esc((role+' '+es.map(e=>e.text).join(' ')).toLowerCase())}">
+  <div class="rn">${esc(role)}</div><div>${v}</div>
+  <button class="edit ${sug[id]?'has':''}" data-id="${esc(id)}">✎ ${sug[id]?'Edited':'Amend'}</button>
+  <div class="sug ${sug[id]?'on':''}"><textarea placeholder="Your correction / what should it say / source…" data-id="${esc(id)}">${esc(sug[id]||'')}</textarea></div></div>`;
+}
+function renderCards(){
+  $('#cards').innerHTML=D.confs.map(c=>{
+    const n=(c.host&&c.host.u?1:0)+c.rows.reduce((a,x)=>a+x.es.filter(e=>e.u).length,0);
+    const hostTxt=c.host?`<span class="${c.host.u?'u v':''}">${clean(c.host.text)}</span>`:'<span class="empty">host not recorded</span>';
+    return `<article class="conf ${n?'':'closed'}" data-y="${c.year}" data-city="${esc(c.city.toLowerCase())}">
+    <div class="ch"><span class="yr">${c.year}</span><div><div class="city">${esc(c.city)}</div><div class="host">${hostTxt}</div></div>
+    ${n?`<span class="badge">${n} to verify</span>`:''}<span class="chev ${n?'':'x'}" style="${n?'':'margin-left:auto'}">▾</span></div>
+    <div class="rows">${rowHTML(c,'Host University',c.host?[c.host]:[],key(c,{name:'Host University'}))}${c.rows.map(x=>rowHTML(c,x.role.name,x.es,key(c,x.role))).join('')}</div></article>`}).join('');
+}
+function renderMatrix(){
+  const cols=[];for(let c=2;c<=68;c++)cols.push(c);
+  const anchor=new Set(D.anch.map(a=>a[0]));
+  const tpl=cols.map(c=>c===65?'120px':anchor.has(c)?'104px':'22px').join(' ');
+  const idx=c=>c-1;                         // grid col index (label=1, col B=2 → line 2)
+  let h=`<div class="mx" style="grid-template-columns:150px ${tpl}">`;
+  h+=`<div class="lab yh" style="grid-row:1;grid-column:1;text-align:left">Role</div>`;
+  const confCols=new Set(D.confs.map(c=>c.col));
+  D.anch.forEach((a,i)=>{const end=(D.anch[i+1]?D.anch[i+1][0]:69)-1;
+    h+=`<div class="yh ${confCols.has(a[0])?'c':''}" style="grid-row:1;grid-column:${a[0]} / ${end+1}">${a[1]}</div>`});
+  const rowsAll=[{name:'Conference Location',row:2,entries:D.confs.map(c=>({text:c.city,c0:c.col,c1:c.col+(c.col<64?1:1),u:c.u,conf:1}))},...D.roles];
+  rowsAll.forEach((r,i)=>{
+    const gr=i+2;
+    h+=`<div class="lab" style="grid-row:${gr};grid-column:1">${esc(r.name)}</div>`;
+    h+=`<div class="gap" style="grid-row:${gr};grid-column:2 / ${70}"></div>`;
+    r.entries.forEach(e=>{
+      const last=Math.min(e.c1,68);
+      h+=`<div class="${e.conf?'cf':'e'} ${e.u?'u':''}" data-t="${esc((r.name+' '+e.text).toLowerCase())}" data-u="${e.u?1:0}" style="grid-row:${gr};grid-column:${e.c0} / ${last+1}" title="${esc(r.name)}${termTxt(e)?' · '+termTxt(e):''}">${clean(e.text)}</div>`});
+  });
+  $('#matrix').innerHTML=`<p class="legend">Grey = no office-holder recorded. Scroll sideways; the role column stays fixed. Bars show how long each person served.</p><div class="mwrap">${h}</div>`;
+}
+function renderReview(){
+  $('#review').innerHTML=`<p class="legend">Every cell marked yellow in the spreadsheet. Click a row to jump to it in the conference view.</p><table><thead><tr><th>Year</th><th>Conference</th><th>Role</th><th>Entry as it stands</th></tr></thead><tbody>${uniq.map((u,i)=>`<tr class="rv" data-y="${u.c.year}" data-role="${esc(u.role)}"><td>${u.more.map(c=>c.year).join(', ')}</td><td>${u.more.map(c=>esc(c.city)).join(', ')}</td><td>${esc(u.role)}</td><td><span class="v u">${clean(u.e.text)}</span></td></tr>`).join('')}</tbody></table>`;
+}
+renderCards();renderMatrix();renderReview();
+// view tabs
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  ['cards','matrix','review'].forEach(v=>$('#'+v).classList.toggle('hide',v!==b.dataset.v));});
+// collapse
+$('#cards').addEventListener('click',e=>{
+  const ed=e.target.closest('.edit');
+  if(ed){const s=ed.parentElement.querySelector('.sug');s.classList.toggle('on');if(s.classList.contains('on'))s.querySelector('textarea').focus();return}
+  const h=e.target.closest('.ch');if(h)h.parentElement.classList.toggle('closed');});
+$('#cards').addEventListener('input',e=>{
+  if(e.target.tagName!=='TEXTAREA')return;
+  const id=e.target.dataset.id,v=e.target.value.trim();
+  if(v)sug[id]=v;else delete sug[id];store.set(sug);
+  const b=e.target.closest('.r').querySelector('.edit');b.classList.toggle('has',!!v);b.textContent='✎ '+(v?'Edited':'Amend');count();});
+function count(){$('#ns').textContent=Object.keys(sug).length}count();
+// filter/search
+function filt(){
+  const q=$('#q').value.trim().toLowerCase(),only=$('#only').checked;
+  document.querySelectorAll('.conf').forEach(c=>{
+    const cm=!q||c.dataset.city.includes(q)||c.dataset.y.includes(q);let any=false;
+    c.querySelectorAll('.r').forEach(r=>{
+      const ok=(!only||r.dataset.u==='1')&&(!q||cm||r.dataset.t.includes(q));
+      r.classList.toggle('hide',!ok);if(ok)any=true;});
+    c.classList.toggle('hide',!any);
+    if(any&&(q||only))c.classList.remove('closed');});
+  document.querySelectorAll('#matrix .e,#matrix .cf').forEach(e=>{
+    const m=(!q||e.dataset.t.includes(q));e.style.opacity=m?1:.15;
+    if(only&&e.dataset.u!=='1')e.style.opacity=.15;});
+}
+$('#q').oninput=filt;$('#only').onchange=filt;
+// review jump
+$('#review').addEventListener('click',e=>{
+  const tr=e.target.closest('.rv');if(!tr)return;
+  $('.tab[data-v=cards]').click();$('#q').value='';$('#only').checked=false;filt();
+  const c=document.querySelector(`.conf[data-y="${tr.dataset.y}"]`);c.classList.remove('closed');
+  const r=[...c.querySelectorAll('.r')].find(x=>x.querySelector('.rn').textContent===tr.dataset.role);
+  r.scrollIntoView({block:'center',behavior:'smooth'});r.classList.add('hl');setTimeout(()=>r.classList.remove('hl'),2500);});
+// export
+function report(){
+  const L=['WCTRS 50-year timeline: suggested amendments','Name / affiliation: ','',''];
+  D.confs.forEach(c=>{const items=[];
+    [['Host University',c.host?c.host.text:'(none)'],...c.rows.map(x=>[x.role.name,x.es.map(e=>e.text).join('; ')||'(none)'])]
+     .forEach(([n,cur])=>{const id=key(c,{name:n});if(sug[id])items.push(`  - ${n}\n      current: ${cur}\n      suggested: ${sug[id].replace(/\n/g,'\n      ')}`)});
+    if(items.length)L.push(`${c.year} ${c.city}`,...items,'')});
+  return L.join('\n');}
+$('#exp').onclick=()=>{$('#out').value=Object.keys(sug).length?report():'No amendments yet. Hover a row in the Conferences view and click “✎ Amend”.';$('#dlg').showModal()};
+$('#cp').onclick=()=>{$('#out').select();document.execCommand('copy')};
+$('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('#out').value],{type:'text/plain'}));a.download='WCTRS_timeline_amendments.txt';a.click()};
+</script></body></html>
