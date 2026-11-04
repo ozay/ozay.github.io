@@ -48,6 +48,9 @@
      deadline   "YYYY-MM-DD" — the abstract or paper deadline. Leave it out
                 unless you have checked it. A deadline in the past drops out
                 of "Open calls" by itself; a wrong one is worse than none.
+                While the call is open the edition sits under "Open calls" and
+                nowhere else; once the deadline passes it moves down to
+                "Coming up" on its own.
      url        that year's own site
      roles      array of keys in SITE_CONF_ROLES. Omit for a plain listing.
      talk       optional: the `date` of an entry in talks.js, which puts that
@@ -287,6 +290,15 @@ window.SITE_CONF_EDITIONS = [
     date: "2026-06-29", dateEnd: "2026-07-01",
     roles: ["speaker"],
     talk: "2026-06-29" },
+
+  { series: "isahp", year: 2027, edition: "19th", editionTr: "19.",
+    city: "İstanbul", country: "Türkiye",
+    date: "2027-05-31", dateEnd: "2027-06-02",
+    deadline: "2027-02-15",
+    url: "https://isahp.org/isahp",
+    roles: ["chair"],
+    noteEn: "Theme: sustainable decisions for a complex future. At Istanbul Technical University, Maçka campus.",
+    noteTr: "Tema: karmaşık bir gelecek için sürdürülebilir kararlar. İstanbul Teknik Üniversitesi Maçka yerleşkesinde." },
 
   /* Özay attended both of these. Themes are from the ITF's own summit
      material; the venue is the Congress Center Leipzig, as every year. */

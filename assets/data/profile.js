@@ -150,6 +150,12 @@ window.SITE_TIMELINE = [
     bodyEn: "Current post. Teaching mathematical programming, multivariate functions, applied entrepreneurship and technical English.",
     bodyTr: "Güncel görev. Matematiksel programlama, çok değişkenli fonksiyonlar, uygulamalı girişimcilik ve teknik İngilizce dersleri." },
 
+  { from: 2027, to: null, kind: "service",
+    titleEn: "Co-chairing ISAHP 2027", titleTr: "ISAHP 2027 eş başkanlığı",
+    orgEn: "19th International Symposium on the Analytic Hierarchy Process", orgTr: "19. Uluslararası Analitik Hiyerarşi Süreci Sempozyumu",
+    bodyEn: "The AHP and ANP symposium comes to Istanbul Technical University from 31 May to 2 June 2027, on sustainable decisions for a complex future — back to the university where the three degrees above were taken.",
+    bodyTr: "AHP ve ANP sempozyumu 31 Mayıs – 2 Haziran 2027'de İstanbul Teknik Üniversitesi'ne geliyor; teması karmaşık bir gelecek için sürdürülebilir kararlar — yukarıdaki üç derecenin alındığı üniversiteye dönüş." },
+
   { from: 2026, to: null, kind: "research",
     titleEn: "Sustainable development goals & smart cities", titleTr: "Sürdürülebilir kalkınma amaçları ve akıllı şehirler",
     orgEn: "Environmental Modelling & Software · IJUS", orgTr: "Environmental Modelling & Software · IJUS",

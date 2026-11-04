@@ -164,8 +164,10 @@
     fill("conf-calls",
       EDITIONS.filter(isOpen).sort((a, b) => (a.deadline < b.deadline ? -1 : 1)).map(editionCard).join(""));
 
+    /* An edition with an open call is already shown above, so keep it out of
+       here rather than printing the same card twice. */
     fill("conf-upcoming",
-      EDITIONS.filter(isUpcoming).sort(sortSoonest).map(editionCard).join(""));
+      EDITIONS.filter(e => isUpcoming(e) && !isOpen(e)).sort(sortSoonest).map(editionCard).join(""));
 
     fill("conf-record",
       EDITIONS.filter(e => !isUpcoming(e) && (e.roles || []).length).sort(sortLatest).map(editionCard).join(""));
