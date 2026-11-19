@@ -26,6 +26,7 @@ add a paper, a course, a talk or a post.
 | What | File |
 |---|---|
 | Publications + research themes | `assets/data/publications.js` |
+| Book chapters | `assets/data/publications.js` (`SITE_CHAPTERS`) |
 | Courses, themes, universities, active term | `assets/data/courses.js` |
 | Bio, links, supervised theses, career timeline | `assets/data/profile.js` |
 | Blog index | `assets/data/posts.js` |
@@ -107,6 +108,13 @@ term counts and the four headline numbers all follow from `terms`.
 Add an entry at the **top** of `SITE_PUBLICATIONS`. Set `topic` to one of the keys
 in `SITE_TOPICS` at the top of the same file. Fill in `doi` when you have one — the
 card then shows a DOI button instead of a Google Scholar search link.
+
+### A new book chapter
+
+Add an entry at the **top** of `SITE_CHAPTERS`, at the foot of the same file.
+Chapters are kept out of `SITE_PUBLICATIONS` on purpose: the three figures and
+the headline count on `research.html` are about journal articles. The chapter
+list is its own section, below the filterable one, and is not searchable.
 
 ### A new funding source
 

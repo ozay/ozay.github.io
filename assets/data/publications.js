@@ -159,3 +159,25 @@ window.SITE_PUBLICATIONS = [
     doi: ""
   }
 ];
+
+/* ---------------------------------------------------------------------------
+   Book chapters. Separate from SITE_PUBLICATIONS: the figures above count
+   journal articles, so a chapter does not belong in that array. Newest first.
+   editors / publisher / detail are shown on the venue line and in the
+   copied citation.
+--------------------------------------------------------------------------- */
+
+window.SITE_CHAPTERS = [
+  {
+    year: 2026,
+    title: "Analyzing the role of entrepreneurial ventures in the defense sector: A quantitative study on global and Turkish trends",
+    authors: ["Özay Özaydın"],
+    editors: ["H. O. Yeloğlu", "B. Mrugalska", "Y. T. İç"],
+    book: "Engineering Innovation Nexus: Technology and R&D Management",
+    publisher: "Routledge",
+    detail: "Pages 125–134",
+    topic: "industry",
+    tags: ["entrepreneurship", "defence industry", "Türkiye", "trends"],
+    doi: "10.1201/9781003734802-14"
+  }
+];

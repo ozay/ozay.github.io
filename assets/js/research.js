@@ -190,6 +190,63 @@
     }));
   }
 
+  /* ----------------------------------------------------------- chapters -- */
+  /* APA editor list: "A, B, & C" in English, "A, B ve C" in Turkish. */
+  function edList(editors, amp) {
+    if (editors.length < 2) return editors.join("");
+    const serial = amp === "&" && editors.length > 2 ? ", " : " ";   // Turkish takes no comma before "ve"
+    return editors.slice(0, -1).join(", ") + serial + amp + " " + editors[editors.length - 1];
+  }
+
+  function chapterCitation(c) {
+    const eds = edList(c.editors, "&");
+    const pages = c.detail ? c.detail.replace(/^Pages\s+/, "") : "";
+    return `${c.authors.join(", ")} (${c.year}). ${c.title}. In ${eds} (Eds.), ${c.book}`
+      + (pages ? ` (pp. ${pages})` : "") + `. ${c.publisher}.`;
+  }
+
+  function chapterCard(c) {
+    const n = topicKeys.indexOf(c.topic) + 1;
+    const authors = c.authors.map(a =>
+      ME.test(a) ? `<span class="me">${Site.esc(a)}</span>` : Site.esc(a)
+    ).join(", ");
+    const eds = Site.esc(edList(c.editors, Site.lang() === "tr" ? "ve" : "&"));
+    const book = `<em>${Site.esc(c.book)}</em>`;
+    const venue = Site.lang() === "tr"
+      ? `${eds} (Ed.), ${book} içinde`
+      : `In ${eds} (Eds.), ${book}`;
+    return `
+      <article class="pub" style="--topic-color: var(--series-${n})">
+        <div class="pub-year mono">${c.year}</div>
+        <div>
+          <h3>${Site.esc(c.title)}</h3>
+          <p class="pub-authors">${authors}</p>
+          <p class="pub-venue">${venue} · ${Site.esc(c.publisher)}${c.detail ? " · " + Site.esc(c.detail) : ""}</p>
+          <div class="pub-foot">
+            <span class="chip"><i class="chip-dot" style="color:var(--series-${n})"></i>${Site.esc(Site.pick(TOPICS[c.topic]))}</span>
+            ${c.tags.slice(0, 3).map(t => `<span class="chip">${Site.esc(t)}</span>`).join("")}
+            <button class="btn btn-ghost btn-sm" type="button" data-copy="${Site.esc(chapterCitation(c))}" aria-label="${Site.t("copyCitation")}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+              ${Site.t("copyCitation")}
+            </button>
+            ${c.doi
+              ? `<a class="btn btn-ghost btn-sm" href="https://doi.org/${Site.esc(c.doi)}" target="_blank" rel="noopener">DOI</a>`
+              : `<a class="btn btn-ghost btn-sm" href="https://scholar.google.com/scholar?q=${encodeURIComponent(c.title)}" target="_blank" rel="noopener">${Site.t("searchScholar")}</a>`}
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function chapters() {
+    const host = document.getElementById("chapter-list");
+    if (!host || !window.SITE_CHAPTERS) return;
+    host.innerHTML = window.SITE_CHAPTERS
+      .slice()
+      .sort((a, b) => b.year - a.year)
+      .map(chapterCard)
+      .join("");
+  }
+
   /* ------------------------------------------------------------- theses -- */
   function theses() {
     const host = document.getElementById("thesis-list");
@@ -223,10 +280,11 @@
     document.getElementById("pub-search").value = state.q;
     drawFigures();
     apply();
+    chapters();
     theses();
     if (state.q) document.getElementById("pub-search").closest(".filters").scrollIntoView({ block: "start" });
   });
 
-  document.addEventListener("langchange", () => { drawFigures(); apply(); theses(); });
+  document.addEventListener("langchange", () => { drawFigures(); apply(); chapters(); theses(); });
   document.addEventListener("themechange", drawFigures);
 })();
