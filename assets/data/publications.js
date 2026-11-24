@@ -22,7 +22,7 @@ window.SITE_PUBLICATIONS = [
     title: "Interaction of Sustainable Development Goals from an Environmental Perspective",
     authors: ["Özgür Kabak", "Şule Önsel Ekici", "Özay Özaydın", "Füsun Ülengin", "Y. İlker Topçu"],
     venue: "Environmental Modelling & Software",
-    detail: "106999",
+    artno: "106999",
     topic: "sustain",
     tags: ["SDG", "environment", "systems", "interaction", "modelling"],
     doi: ""
@@ -32,7 +32,7 @@ window.SITE_PUBLICATIONS = [
     title: "Value propositions in smart city business models: An analytical framework based on the smart cities wheel",
     authors: ["Özay Özaydın", "Hakan Acar"],
     venue: "International Journal of Urban Sciences",
-    detail: "Pages 1–19",
+    pages: "1–19",
     topic: "innovation",
     tags: ["smart city", "business model", "value proposition", "framework"],
     doi: ""
@@ -42,7 +42,7 @@ window.SITE_PUBLICATIONS = [
     title: "A decision model for enhancing reaction yield: Pd(II) and Pt(II) metal insertion to free porphyrin",
     authors: ["Özay Özaydın", "Emel Önal"],
     venue: "Turkish Journal of Chemistry",
-    detail: "Volume 49, Issue 4, Pages 450–459",
+    volume: "49", issue: "4", pages: "450–459",
     topic: "decision",
     tags: ["chemistry", "yield", "decision model", "experimental design"],
     doi: ""
@@ -52,7 +52,7 @@ window.SITE_PUBLICATIONS = [
     title: "Analysis of direct and indirect relations among sustainable development goals and transportation targets",
     authors: ["Özay Özaydın", "Özgür Kabak", "Y. İlker Topçu", "Füsun Ülengin", "Şule Önsel Ekici"],
     venue: "Transport Policy",
-    detail: "Volume 171, Pages 270–281",
+    volume: "171", pages: "270–281",
     topic: "sustain",
     tags: ["SDG", "transportation", "DEMATEL", "policy"],
     doi: ""
@@ -62,7 +62,7 @@ window.SITE_PUBLICATIONS = [
     title: "A simulation-based approach for improving the largest border crossing between Europe and Turkey",
     authors: ["Füsun Ülengin", "Bora Çekyay", "Mine Işık", "Özay Özaydın", "Özgür Kabak", "Peral Toktaş-Palut", "Şule Önsel Ekici", "Y. İlker Topçu"],
     venue: "Transport Policy",
-    detail: "Volume 114, Pages 350–363",
+    volume: "114", pages: "350–363",
     topic: "transport",
     tags: ["simulation", "border crossing", "Kapıkule", "queueing"],
     doi: "",
@@ -73,7 +73,7 @@ window.SITE_PUBLICATIONS = [
     title: "A multi-commodity network flow and gravity model integration for analyzing impact of road transport quotas on international trade",
     authors: ["Bora Çekyay", "Özgür Kabak", "Füsun Ülengin", "Burç Ülengin", "Peral Toktaş-Palut", "Özay Özaydın"],
     venue: "Research in Transportation Economics",
-    detail: "Volume 80, 100816",
+    volume: "80", artno: "100816",
     topic: "trade",
     tags: ["network flow", "gravity model", "quota", "road transport"],
     doi: ""
@@ -83,7 +83,7 @@ window.SITE_PUBLICATIONS = [
     title: "Policy developments for the reduction of climate change impacts by the transportation sector",
     authors: ["Füsun Ülengin", "Mine Işık", "Şule Önsel Ekici", "Özay Özaydın", "Özgür Kabak", "Y. İlker Topçu"],
     venue: "Transport Policy",
-    detail: "Volume 61, Pages 36–50",
+    volume: "61", pages: "36–50",
     topic: "sustain",
     tags: ["climate change", "emissions", "policy", "transportation"],
     doi: ""
@@ -93,7 +93,7 @@ window.SITE_PUBLICATIONS = [
     title: "Analysis of the impact of bilateral and transit quotas on Turkey's international trade by road transport: An integrated maximum flow and gravity model approach",
     authors: ["Bora Çekyay", "Peral Toktaş-Palut", "Özgür Kabak", "Füsun Ülengin", "Özay Özaydın", "Burç Ülengin"],
     venue: "Research in Transportation Economics",
-    detail: "Volume 66, Pages 70–77",
+    volume: "66", pages: "70–77",
     topic: "trade",
     tags: ["maximum flow", "gravity model", "quota", "foreign trade"],
     doi: ""
@@ -103,7 +103,7 @@ window.SITE_PUBLICATIONS = [
     title: "Critical Success Factors for the Iron and Steel Industry in Turkey: A Fuzzy DEMATEL Approach",
     authors: ["Özgür Kabak", "Füsun Ülengin", "Bora Çekyay", "Şule Önsel Ekici", "Özay Özaydın"],
     venue: "International Journal of Fuzzy Systems",
-    detail: "Volume 18, Issue 3, Pages 523–536",
+    volume: "18", issue: "3", pages: "523–536",
     topic: "industry",
     tags: ["fuzzy DEMATEL", "iron and steel", "critical success factors"],
     doi: ""
@@ -113,7 +113,7 @@ window.SITE_PUBLICATIONS = [
     title: "Effects of quotas on Turkish foreign trade: A gravity model",
     authors: ["Füsun Ülengin", "Bora Çekyay", "Peral Toktaş-Palut", "Burç Ülengin", "Özgür Kabak", "Özay Özaydın", "Şule Önsel Ekici"],
     venue: "Transport Policy",
-    detail: "Volume 38, Pages 1–7",
+    volume: "38", pages: "1–7",
     topic: "trade",
     tags: ["gravity model", "quota", "foreign trade", "econometrics"],
     doi: ""
@@ -123,7 +123,7 @@ window.SITE_PUBLICATIONS = [
     title: "Cumulative belief degrees approach for analyzing the competitiveness of the automotive industry",
     authors: ["Özgür Kabak", "Füsun Ülengin", "Şule Önsel Ekici", "Özay Özaydın", "Emel Aktaş"],
     venue: "Knowledge-Based Systems",
-    detail: "Volume 70, Pages 15–25",
+    volume: "70", pages: "15–25",
     topic: "industry",
     tags: ["cumulative belief degrees", "automotive", "competitiveness"],
     doi: ""
@@ -133,7 +133,7 @@ window.SITE_PUBLICATIONS = [
     title: "A decision support methodology to enhance the competitiveness of the Turkish automotive industry",
     authors: ["Füsun Ülengin", "Şule Önsel Ekici", "Emel Aktaş", "Özgür Kabak", "Özay Özaydın"],
     venue: "European Journal of Operational Research",
-    detail: "Volume 234, Pages 789–801",
+    volume: "234", pages: "789–801",
     topic: "industry",
     tags: ["decision support", "automotive", "competitiveness", "scenario"],
     doi: ""
@@ -143,7 +143,7 @@ window.SITE_PUBLICATIONS = [
     title: "Are road transportation investments in line with demand projections? A gravity-based analysis for Turkey",
     authors: ["Füsun Ülengin", "Özay Özaydın", "Burç Ülengin", "Andreas Kopp", "Şule Önsel Ekici", "Özgür Kabak", "Emel Aktaş"],
     venue: "Transport Policy",
-    detail: "Volume 29, Pages 227–235",
+    volume: "29", pages: "227–235",
     topic: "transport",
     tags: ["investment", "demand projection", "gravity model", "road"],
     doi: ""
@@ -153,7 +153,7 @@ window.SITE_PUBLICATIONS = [
     title: "Optimizing Fire Station Locations for the Istanbul Metropolitan Municipality",
     authors: ["Emel Aktaş", "Özay Özaydın", "Burçin Bozkaya", "Füsun Ülengin", "Şule Önsel Ekici"],
     venue: "Interfaces (now INFORMS Journal on Applied Analytics)",
-    detail: "Volume 43, Issue 3, Pages 240–255",
+    volume: "43", issue: "3", pages: "240–255",
     topic: "decision",
     tags: ["facility location", "emergency services", "Istanbul", "GIS", "optimization"],
     doi: ""
@@ -165,8 +165,11 @@ window.SITE_PUBLICATIONS = [
    Both are separate from SITE_PUBLICATIONS, because the figures and the
    headline on research.html count journal articles. Newest first.
 
-   editors / book / publisher / pages  -> the venue line and the copied citation
-   series / volume                     -> optional, shown after the book title
+   editors / book / publisher          -> the venue line and the copied citation
+   volume / issue / pages / artno      -> as on a journal entry; Site.bib turns
+                                          them into "Volume 4, Pages 156–163"
+                                          or "Cilt 4, Sayfa 156–163"
+   series                              -> optional, shown after the book title
    event                               -> conference papers only: { en, tr }
    link                                -> optional extra button, e.g. an open-
                                           access PDF
@@ -196,7 +199,7 @@ window.SITE_CONFERENCE_PAPERS = [
     book: "Re-Generation in Transport: Proceedings of the 11th TRA Conference, 2026, Budapest, Hungary",
     series: "Lecture Notes in Mobility",
     publisher: "Springer Nature Switzerland",
-    volume: { en: "Volume 4", tr: "Cilt 4" },
+    volume: "4",
     pages: "156–163",
     event: {
       en: "Transport Research Arena (TRA) 2026 · Budapest, 18–21 May 2026",

@@ -14,7 +14,7 @@
         <div>
           <h3>${Site.esc(p.title)}</h3>
           <p class="pub-authors">${authors}</p>
-          <p class="pub-venue"><em>${Site.esc(p.venue)}</em>${p.detail ? " · " + Site.esc(p.detail) : ""}</p>
+          <p class="pub-venue"><em>${Site.esc(p.venue)}</em>${Site.bib(p) ? " · " + Site.esc(Site.bib(p)) : ""}</p>
           <div class="pub-foot">
             <span class="chip"><i class="chip-dot" style="color:var(--series-${n})"></i>${Site.esc(Site.pick(topic))}</span>
           </div>

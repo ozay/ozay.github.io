@@ -111,6 +111,12 @@ Add an entry at the **top** of `SITE_PUBLICATIONS`. Set `topic` to one of the ke
 in `SITE_TOPICS` at the top of the same file. Fill in `doi` when you have one — the
 card then shows a DOI button instead of a Google Scholar search link.
 
+Give `volume`, `issue`, `pages` and `artno` as bare values — `"171"`, `"4"`,
+`"270–281"`, `"106999"` — and leave out the ones that do not apply. `Site.bib`
+in `site.js` assembles them, so the card reads *Volume 171, Pages 270–281* in
+English and *Cilt 171, Sayfa 270–281* in Turkish. The copied citation stays
+English in both.
+
 ### A new book chapter or conference paper
 
 Add an entry at the **top** of `SITE_CHAPTERS` or `SITE_CONFERENCE_PAPERS`, at

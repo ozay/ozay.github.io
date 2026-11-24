@@ -241,6 +241,16 @@
       if (obj[base + (l === "tr" ? "Tr" : "En")] != null) return obj[base + (l === "tr" ? "Tr" : "En")];
       return obj[l] != null ? obj[l] : (obj.en != null ? obj.en : "");
     },
+    /** Volume / issue / pages / article number, in the reader's language. */
+    bib(p, lang) {
+      const tr = (lang || this.lang()) === "tr";
+      const bits = [];
+      if (p.volume) bits.push((tr ? "Cilt " : "Volume ") + p.volume);
+      if (p.issue)  bits.push((tr ? "Sayı " : "Issue ") + p.issue);
+      if (p.pages)  bits.push((tr ? "Sayfa " : "Pages ") + p.pages);
+      if (p.artno)  bits.push(p.artno);
+      return bits.join(", ");
+    },
     esc(s) {
       return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     },

@@ -82,7 +82,8 @@
   }
 
   function citation(p) {
-    return `${p.authors.join(", ")} (${p.year}). ${p.title}. ${p.venue}${p.detail ? ", " + p.detail : ""}.`;
+    const bib = Site.bib(p, "en");   // the copied citation stays English
+    return `${p.authors.join(", ")} (${p.year}). ${p.title}. ${p.venue}${bib ? ", " + bib : ""}.`;
   }
 
   function card(p) {
@@ -97,7 +98,7 @@
         <div>
           <h3>${highlight(p.title, state.q)}</h3>
           <p class="pub-authors">${authors}</p>
-          <p class="pub-venue"><em>${Site.esc(p.venue)}</em>${p.detail ? " · " + Site.esc(p.detail) : ""}</p>
+          <p class="pub-venue"><em>${Site.esc(p.venue)}</em>${Site.bib(p) ? " · " + Site.esc(Site.bib(p)) : ""}</p>
           <div class="pub-foot">
             <span class="chip"><i class="chip-dot" style="color:var(--series-${n})"></i>${Site.esc(Site.pick(TOPICS[p.topic]))}</span>
             ${p.tags.slice(0, 3).map(t => `<span class="chip">${Site.esc(t)}</span>`).join("")}
@@ -219,8 +220,7 @@
     const bits = [
       c.series ? Site.esc(c.series) : "",
       Site.esc(c.publisher),
-      c.volume ? Site.esc(Site.pick(c.volume)) : "",
-      c.pages ? (tr ? "Sayfa " : "Pages ") + Site.esc(c.pages) : ""
+      Site.esc(Site.bib(c))
     ].filter(Boolean);
     return `
       <article class="pub" style="--topic-color: var(--series-${n})">
