@@ -28,7 +28,7 @@ add a paper, a course, a talk or a post.
 | What | File |
 |---|---|
 | Publications + research themes | `assets/data/publications.js` |
-| Book chapters | `assets/data/publications.js` (`SITE_CHAPTERS`) |
+| Book chapters, conference papers | `assets/data/publications.js` (`SITE_CHAPTERS`, `SITE_CONFERENCE_PAPERS`) |
 | Courses, themes, universities, active term | `assets/data/courses.js` |
 | Bio, links, supervised theses, career timeline | `assets/data/profile.js` |
 | Blog index | `assets/data/posts.js` |
@@ -111,12 +111,14 @@ Add an entry at the **top** of `SITE_PUBLICATIONS`. Set `topic` to one of the ke
 in `SITE_TOPICS` at the top of the same file. Fill in `doi` when you have one — the
 card then shows a DOI button instead of a Google Scholar search link.
 
-### A new book chapter
+### A new book chapter or conference paper
 
-Add an entry at the **top** of `SITE_CHAPTERS`, at the foot of the same file.
-Chapters are kept out of `SITE_PUBLICATIONS` on purpose: the three figures and
-the headline count on `research.html` are about journal articles. The chapter
-list is its own section, below the filterable one, and is not searchable.
+Add an entry at the **top** of `SITE_CHAPTERS` or `SITE_CONFERENCE_PAPERS`, at
+the foot of the same file. Both are kept out of `SITE_PUBLICATIONS` on purpose:
+the three figures and the headline count on `research.html` are about journal
+articles. Each gets its own section below the filterable list, and neither is
+searchable. A conference paper also carries `event`, the conference and where
+it was held, in both languages.
 
 ### A new funding source
 

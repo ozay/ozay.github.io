@@ -161,10 +161,15 @@ window.SITE_PUBLICATIONS = [
 ];
 
 /* ---------------------------------------------------------------------------
-   Book chapters. Separate from SITE_PUBLICATIONS: the figures above count
-   journal articles, so a chapter does not belong in that array. Newest first.
-   editors / publisher / detail are shown on the venue line and in the
-   copied citation.
+   Work published inside a book: chapters below, conference papers after them.
+   Both are separate from SITE_PUBLICATIONS, because the figures and the
+   headline on research.html count journal articles. Newest first.
+
+   editors / book / publisher / pages  -> the venue line and the copied citation
+   series / volume                     -> optional, shown after the book title
+   event                               -> conference papers only: { en, tr }
+   link                                -> optional extra button, e.g. an open-
+                                          access PDF
 --------------------------------------------------------------------------- */
 
 window.SITE_CHAPTERS = [
@@ -175,9 +180,35 @@ window.SITE_CHAPTERS = [
     editors: ["H. O. Yeloğlu", "B. Mrugalska", "Y. T. İç"],
     book: "Engineering Innovation Nexus: Technology and R&D Management",
     publisher: "Routledge",
-    detail: "Pages 125–134",
+    pages: "125–134",
     topic: "industry",
     tags: ["entrepreneurship", "defence industry", "Türkiye", "trends"],
     doi: "10.1201/9781003734802-14"
+  }
+];
+
+window.SITE_CONFERENCE_PAPERS = [
+  {
+    year: 2026,
+    title: "Smart and Green Logistics: Harnessing Digital Innovation for Maritime Decarbonization in Türkiye",
+    authors: ["Fatma Talya Temizceri", "Serkan Karakaş", "Özay Özaydın", "A. Zafer Acar"],
+    editors: ["D. Esztergár-Kiss", "A. Munkácsy", "Á. Török"],
+    book: "Re-Generation in Transport: Proceedings of the 11th TRA Conference, 2026, Budapest, Hungary",
+    series: "Lecture Notes in Mobility",
+    publisher: "Springer Nature Switzerland",
+    volume: { en: "Volume 4", tr: "Cilt 4" },
+    pages: "156–163",
+    event: {
+      en: "Transport Research Arena (TRA) 2026 · Budapest, 18–21 May 2026",
+      tr: "Transport Research Arena (TRA) 2026 · Budapeşte, 18–21 Mayıs 2026"
+    },
+    topic: "transport",
+    tags: ["maritime", "decarbonisation", "digitalisation", "ports"],
+    openAccess: true,
+    doi: "10.1007/978-3-032-36095-3_20",
+    link: {
+      href: "https://link.springer.com/content/pdf/10.1007/978-3-032-36095-3_20.pdf",
+      labelEn: "PDF", labelTr: "PDF"
+    }
   }
 ];
