@@ -26,3 +26,6 @@ tools/.chess-cache/
 
 # WCTRS newsletter scans — 55 MB, shared by Dropbox link instead of the repo.
 wctrs/newsletters_1988-1998.pdf
+
+# Live manuscript status, fetched by tools/track-refresh.py at deploy time.
+assets/data/manuscripts-track.json

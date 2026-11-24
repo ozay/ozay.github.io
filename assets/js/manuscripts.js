@@ -48,6 +48,10 @@
     msThYear: "Year", msTotal: "total",
     msShowTable: "Show as a table", msHideTable: "Hide table",
     msTrack: "Track", msUpdate: "Update", msNext: "Next round",
+    msLive: "Live", msLiveChecked: "checked", msLiveLast: "last activity",
+    msLiveCompleted: "Reviews completed", msLiveAccepted: "Reviewers agreed", msLiveInvited: "Invitations sent",
+    msLiveDecision: "Decision", msLiveRevision: "Revision", msLiveFailed: "Live status could not be fetched at the last deploy.",
+    msLiveRecord: "Record this", msLiveAcceptedJ: "Accepted by the journal",
     msUnsaved: "{n} unsaved changes", msUnsavedOne: "1 unsaved change", msNoChanges: "Editing. No unsaved changes.",
     msSaving: "Saving…", msSaved: "Saved. The public page catches up in a minute or two.",
     msSaveFailed: "Save failed: {e}", msConflict: "The file on GitHub changed since this page loaded it. Overwrite it with this version?",
@@ -103,6 +107,10 @@
     msThYear: "Yıl", msTotal: "toplam",
     msShowTable: "Tablo olarak göster", msHideTable: "Tabloyu gizle",
     msTrack: "Takip", msUpdate: "Güncelle", msNext: "Sonraki tur",
+    msLive: "Canlı", msLiveChecked: "kontrol", msLiveLast: "son hareket",
+    msLiveCompleted: "Tamamlanan değerlendirme", msLiveAccepted: "Kabul eden hakem", msLiveInvited: "Gönderilen davet",
+    msLiveDecision: "Karar", msLiveRevision: "Revizyon", msLiveFailed: "Son yayında canlı durum alınamadı.",
+    msLiveRecord: "Kaydet", msLiveAcceptedJ: "Dergi tarafından kabul edildi",
     msUnsaved: "{n} kaydedilmemiş değişiklik", msUnsavedOne: "1 kaydedilmemiş değişiklik", msNoChanges: "Düzenleme açık. Kaydedilmemiş değişiklik yok.",
     msSaving: "Kaydediliyor…", msSaved: "Kaydedildi. Herkese açık sayfa bir iki dakika içinde güncellenir.",
     msSaveFailed: "Kaydedilemedi: {e}", msConflict: "GitHub'daki dosya bu sayfa yüklendikten sonra değişmiş. Bu sürümle üzerine yazılsın mı?",
@@ -176,6 +184,7 @@
   let editing = false;
   let routeRange = "730";
   let expandAll = false;
+  let track = { fetched: "", items: {} };  // live review status, written at deploy time
 
   const serialise = d => JSON.stringify(d, null, 1);
   const dirty = () => serialise(data) !== baseline;
@@ -266,6 +275,40 @@
   }
 
   /* ----------------------------------------------------------- lanes --- */
+  /* What a service's decision means in this tracker's vocabulary, or null
+     when the wording is not one we can map with confidence. */
+  function liveSuggestion(r, L) {
+    if (!L || !L.ok) return null;
+    if (L.accepted && r.status !== "accepted") return { status: "accepted", decided: "" };
+    const d = L.decision;
+    if (!d || !d.date || !WITH_JOURNAL.has(r.status) || (r.submitted && d.date < r.submitted)) return null;
+    const txt = (d.text || "").toLowerCase();
+    const st = /reject/.test(txt) ? "rejected" : /accept/.test(txt) ? "accepted"
+      : /major/.test(txt) ? "major" : /minor/.test(txt) ? "minor" : /revis/.test(txt) ? "revision" : null;
+    return st ? { status: st, decided: d.date } : null;
+  }
+
+  function livePanel(r) {
+    const L = r.link && track.items[r.link];
+    if (!L) return "";
+    if (!L.ok) return `<p class="ms-live ms-live-fail ms-edit-only">${esc(t("msLiveFailed"))}</p>`;
+    const src = L.source === "elsevier" ? "Elsevier" : "Research Square";
+    const nums = [["completed", "msLiveCompleted"], ["accepted", "msLiveAccepted"], ["invited", "msLiveInvited"]]
+      .filter(([k]) => L.reviews && L.reviews[k] != null && L.reviews[k] !== "")
+      .map(([k, key]) => `<div><dt>${esc(t(key))}</dt><dd class="mono">${esc(L.reviews[k])}</dd></div>`).join("");
+    const sug = liveSuggestion(r, L);
+    return `
+      <div class="ms-live">
+        <p class="ms-live-head"><i class="chip-dot" aria-hidden="true"></i>${esc(t("msLive"))} · ${src}
+          <span class="mono">· ${esc(t("msLiveChecked"))} ${fmtDate(track.fetched.slice(0, 10))}</span></p>
+        <p class="ms-live-status"><b>${esc(L.accepted ? t("msLiveAcceptedJ") : L.status)}</b>${L.lastActivity ? ` · ${esc(t("msLiveLast"))} ${fmtDate(L.lastActivity)}` : ""}${L.revision ? ` · ${esc(t("msLiveRevision"))} ${esc(L.revision)}` : ""}</p>
+        ${L.decision ? `<p class="ms-live-status">${esc(t("msLiveDecision"))}: <b>${esc(L.decision.text)}</b> · ${fmtDate(L.decision.date)}</p>` : ""}
+        ${nums ? `<dl class="ms-live-nums">${nums}</dl>` : ""}
+        ${sug ? `<span class="ms-edit-only"><button class="btn btn-primary btn-sm" type="button" data-act="live" data-i="${r.i}"
+          data-status="${sug.status}" data-decided="${esc(sug.decided)}">${esc(t("msLiveRecord"))}: ${esc(t("st_" + sug.status))}</button></span>` : ""}
+      </div>`;
+  }
+
   function card(r, sub, extra) {
     const link = r.link ? `<a class="ms-link" href="${esc(r.link)}" target="_blank" rel="noopener">${esc(t("msTrack"))} ↗</a>` : "";
     return `
@@ -275,6 +318,7 @@
         <p class="ms-card-title">${esc(r.shownTitle)}</p>
         <p class="ms-card-meta mono">${esc(r.ref)}${r.msid ? " · " + esc(r.msid) : ""}${extra || ""}</p>
         ${r.note ? `<p class="ms-card-note">${esc(r.note)}</p>` : ""}
+        ${livePanel(r)}
         <div class="ms-card-foot">${link}
           <span class="ms-edit-only">
             <button class="btn btn-ghost btn-sm" type="button" data-act="edit" data-i="${r.i}">${esc(t("msUpdate"))}</button>
@@ -626,6 +670,7 @@
     e.preventDefault();
     const i = +b.dataset.i, r = data.submissions[i];
     if (b.dataset.act === "edit") openEditor(r, i, null);
+    if (b.dataset.act === "live") openEditor(Object.assign({}, r, { status: b.dataset.status, decided: b.dataset.decided || r.decided }), i, null);
     if (b.dataset.act === "next") {
       // After a revision request the next round goes back to the same journal;
       // after anything else it is a fresh submission somewhere new.
@@ -764,6 +809,12 @@
       text = await r.text();
     }
     data = JSON.parse(text);
+    // Live review status exists only on the published site; without it the
+    // cards simply have no Live panel.
+    try {
+      const tr = await fetch("assets/data/manuscripts-track.json", { cache: "no-cache" });
+      if (tr.ok) track = await tr.json();
+    } catch (e) { /* no live file */ }
     baseline = serialise(data);
     // An unsaved draft from an earlier visit is restored on top.
     try {

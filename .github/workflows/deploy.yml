@@ -1,11 +1,15 @@
 # Publishes the repository root to GitHub Pages on every push to main.
 # There is no build step — the site is already static, so the whole folder
-# is uploaded as-is.
+# is uploaded as-is. The one generated file is the manuscript tracker's live
+# review status, fetched just before upload and never committed; the daily
+# schedule keeps it fresh when nothing has been pushed.
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "17 4 * * *"   # daily, 07:17 Istanbul
   workflow_dispatch:
 
 # Least privilege: read the code, and mint the token Pages needs.
@@ -28,6 +32,11 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+
+      # A failed lookup must never block a publish, so this step may fail.
+      - name: Fetch live manuscript status
+        continue-on-error: true
+        run: python3 tools/track-refresh.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

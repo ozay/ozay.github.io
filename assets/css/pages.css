@@ -441,3 +441,21 @@
 .ms-form-btns { display: flex; gap: .5rem; justify-content: flex-end; flex-wrap: wrap; }
 .ms-del { margin-right: auto; color: var(--st-bad); }
 .ms-del[hidden] { display: none; }
+
+/* Live review status, fetched at deploy time by tools/track-refresh.py. */
+.ms-live {
+  margin-top: .35rem; padding: .6rem .7rem; border-radius: var(--r-sm);
+  background: var(--accent-2-soft); border: 1px solid color-mix(in srgb, var(--accent-2) 25%, transparent);
+  display: flex; flex-direction: column; gap: .3rem; font-size: .8rem; color: var(--ink-2);
+}
+.ms-live-head { font-size: .7rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-2); }
+.ms-live-head .mono { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--ink-3); }
+.ms-live-head .chip-dot { display: inline-block; vertical-align: .1em; margin-right: .4rem; animation: pulse 2.2s var(--ease) infinite; }
+.ms-live-status b { color: var(--ink); font-weight: 600; }
+.ms-live-nums { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; margin: .1rem 0 0; }
+.ms-live-nums div { display: flex; align-items: baseline; gap: .35rem; }
+.ms-live-nums dt { font-size: .74rem; color: var(--ink-3); }
+.ms-live-nums dd { margin: 0; font-size: .9rem; font-weight: 500; color: var(--ink); }
+.ms-live .ms-edit-only { margin-top: .2rem; }
+.ms-live-fail { background: var(--bg-3); border-color: var(--line); color: var(--ink-3); }
+.ms-editing .ms-live-fail { display: flex; }

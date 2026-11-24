@@ -5,6 +5,8 @@ Static and bilingual (EN/TR). Plain HTML, CSS and vanilla JavaScript —
 no build step, no framework, no package manager, no trackers, no cookies.
 The one request to a third party is the Chess.com public API, which the chess
 page calls for the current rating; it carries no identifier and sets no cookie.
+(The manuscript tracker's live review status is fetched by the deploy job on
+GitHub's servers, not by visitors' browsers.)
 
 ## Running it locally
 
@@ -157,6 +159,26 @@ GitHub, so a save shows at once; the public copy catches up a minute or two late
 
 Because the page commits to `main` itself, run `git pull` in this folder before
 committing anything locally, or the next push will be rejected.
+
+**Live review status.** Put a tracking link in a submission's *Tracking link*
+field and its card gains a *Live* panel. Two kinds of link are read:
+
+- Elsevier, `https://track.authorhub.elsevier.com/?uuid=…` — reviews completed,
+  reviewers agreed, invitations sent, last review activity. Elsevier's tracker
+  stops at peer review; it never says what was decided.
+- Research Square, `https://www.researchsquare.com/article/rs-…/v1` — the
+  preprint's state and timeline, decisions included. When it reports a decision
+  newer than the submission, edit mode shows a *Record this* button that opens
+  the editor with the status and date filled in. Nothing changes until you
+  apply and save.
+
+`tools/track-refresh.py` does the fetching. The deploy workflow runs it before
+every publish and once a day on a schedule (07:17 Istanbul), and writes
+`assets/data/manuscripts-track.json` into the published copy only — the file is
+git-ignored, so the repository never fills with status commits. Run the script
+yourself to see the panels in the local preview. Visitors' browsers never
+contact Elsevier or Research Square; only GitHub's servers do. GitHub pauses
+scheduled workflows after 60 days without a commit; a save from the page counts.
 
 ### A new blog post
 
@@ -332,6 +354,7 @@ assets/
 content/posts/      the Markdown posts
 talks/<slug>/       one folder per talk; talks/_template/ is the starter
 tools/chess-refresh.py    rebuilds assets/data/chess.js from the Chess.com API
+tools/track-refresh.py    live review status for the manuscript tracker (run at deploy)
 courses/<code>/<week>/   lecture decks, e.g. courses/enmu2050/week-01/
 
 kapikule.html  multivariate-week1-trial.html
