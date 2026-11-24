@@ -130,6 +130,34 @@ the keys in `SITE_FUNDING_GROUPS` and `kind` to one of `SITE_FUNDING_KINDS`
 Set `often: true` and it is also pinned to the band at the top of the page.
 The search box covers the name, the `tags` string and both description lines.
 
+### The manuscript tracker
+
+`manuscripts.html` is **unlisted** like the Funding page: not in the nav, the
+footer or `sitemap.xml`, and marked `noindex`. It is still public — anyone with
+the address can read every title, journal, manuscript ID and decision on it.
+Reach it at <https://ozay.github.io/manuscripts.html>.
+
+The data is `assets/data/manuscripts.json`, one entry per submission round in
+the order they happened — the same rows as the old "My Papers" sheet. `project`
+groups the rounds of one manuscript; `status` is one of `planned`, `submitted`,
+`editor`, `review`, `revision`, `major`, `minor`, `accepted`, `rejected`,
+`withdrawn`, `returned`, or empty for "not recorded".
+
+**Editing happens on the page.** Open <https://ozay.github.io/manuscripts.html#edit>
+once, press **Edit**, and paste a GitHub fine-grained personal access token
+limited to this repository with *Contents: Read and write*. The token stays in
+that browser's local storage; after that the Edit button is always there in that
+browser. Each card has **Update** (record a decision) and **Next round** (a
+revision back to the same journal, or a new journal after a rejection); every row
+in the list has a pencil. Changes are held as a draft in the browser until you
+press **Save to GitHub**, which commits the JSON file to `main` and so triggers the
+normal Pages deploy. While signed in, the page reads the file straight from
+GitHub, so a save shows at once; the public copy catches up a minute or two later.
+**Sign out** removes the token from the browser.
+
+Because the page commits to `main` itself, run `git pull` in this folder before
+committing anything locally, or the next push will be rejected.
+
 ### A new blog post
 
 1. Write `content/posts/<slug>.en.md`, and `content/posts/<slug>.tr.md` if you are
@@ -282,6 +310,7 @@ index.html  about.html  research.html  teaching.html  talks.html
 writing.html  post.html  chess.html  contact.html  404.html
 conferences.html
 funding.html              unlisted; see "Funding" below
+manuscripts.html          unlisted; see "The manuscript tracker"
 assets/
   css/base.css      design tokens, layout, shared components
   css/pages.css     hero, timeline, charts, cards, blog
@@ -292,6 +321,7 @@ assets/
   js/funding.js    the Funding page
   js/conferences.js the Conferences page
   js/chess.js      the Chess page
+  js/manuscripts.js the manuscript tracker (reads and saves data/manuscripts.json)
   js/vendor/marked.min.js   Markdown parser, v12.0.2, vendored on purpose
   data/             the content files (chess.js is generated)
   img/logo.svg  favicon.svg

@@ -486,5 +486,5 @@
     return out;
   }
 
-  window.Charts = { columns, stackedColumns, bars, line, egoNetwork, legend, dataTable, series: SERIES, hideTip };
+  window.Charts = { columns, stackedColumns, bars, line, egoNetwork, legend, dataTable, series: SERIES, hideTip, bindMark };
 })();
